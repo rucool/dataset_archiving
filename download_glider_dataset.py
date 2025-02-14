@@ -10,7 +10,7 @@ directory
 import numpy as np
 import os
 import yaml
-import functions.common as cf
+import dataset_archiving.common as cf
 
 
 def flatten(lst):

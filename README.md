@@ -1,4 +1,4 @@
-# dataset-archiving
+# dataset_archiving
 A collection of tools to post-process and prepare datasets for archiving at the National Centers for Environmental Information (NCEI), Northeast Fisheries Science Center (NEFSC) and Mid-Atlantic Acoustic Telemetry Observation System (MATOS)
 
 ## Installation Instructions
@@ -6,13 +6,13 @@ Add the channel conda-forge to your .condarc. You can find out more about conda-
 
 `conda config --add channels conda-forge`
 
-Clone the dataset-archiving repository
+Clone the dataset_archiving repository
 
-`git clone https://github.com/rucool/dataset-archiving.git`
+`git clone https://github.com/rucool/dataset_archiving.git`
 
-Change your current working directory to the location that you downloaded dataset-archiving. 
+Change your current working directory to the location that you downloaded dataset_archiving. 
 
-`cd /Users/garzio/Documents/repo/dataset-archiving/`
+`cd /Users/garzio/Documents/repo/dataset_archiving/`
 
 Create conda environment from the included environment.yml file:
 
@@ -20,9 +20,9 @@ Create conda environment from the included environment.yml file:
 
 Once the environment is done building, activate the environment:
 
-`conda activate dataset-archiving`
+`conda activate dataset_archiving`
 
-Install the toolbox to the conda environment from the root directory of the dataset-archiving toolbox:
+Install the toolbox to the conda environment from the root directory of the dataset_archiving toolbox:
 
 `pip install .`
 

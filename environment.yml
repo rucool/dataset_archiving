@@ -1,4 +1,4 @@
-name: dataset-archiving
+name: dataset_archiving
 channels:
   - conda-forge
   - defaults
@@ -16,3 +16,4 @@ dependencies:
   - geopandas==1.0.1
   - pyyaml==6.0.2
   - requests==2.32.3
+  - wheel==0.45.1
