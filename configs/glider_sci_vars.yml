@@ -1,0 +1,15 @@
+- conductivity
+- salinity
+- density
+- pressure
+- temperature
+- chlorophyll_a
+- oxygen_concentration_shifted_mgL
+- oxygen_saturation_shifted
+- pH
+- pH_qartod_gross_range_test
+- pH_qartod_spike_test
+- aragonite_saturation_state
+- total_alkalinity
+- sbe41n_ph_ref_voltage
+- sbe41n_ph_ref_voltage_shifted

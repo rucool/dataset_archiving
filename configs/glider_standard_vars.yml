@@ -1,0 +1,7 @@
+- latitude
+- longitude
+- profile_lat
+- profile_lon
+- profile_time
+- depth
+- depth_interpolated
