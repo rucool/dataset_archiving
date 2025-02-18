@@ -2,7 +2,7 @@
 
 """
 Author: Lori Garzio on 2/11/2025
-Last modified: 2/14/2025
+Last modified: 2/18/2025
 Download a user-specified glider dataset in netCDF format from RUCOOL's glider ERDDAP server and save to a local
 directory
 """
@@ -26,9 +26,8 @@ def main(deploy, version, aev, sdir):
 
     ds_vars = cf.get_dataset_variables(ru_server, dsid)
 
-    scriptdir = os.path.dirname(os.path.abspath(__file__))
-    
-    configdir = os.path.join(scriptdir, 'configs')
+    root_dir = os.path.dirname(os.path.abspath(__file__))
+    configdir = os.path.join(root_dir, 'configs')
 
     # start with the standard glider variables
     with open(os.path.join(configdir, 'glider_standard_vars.yml')) as f:
