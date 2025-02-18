@@ -1,0 +1,25 @@
+# Configuration file to set default color maps for plotting variables
+conductivity:
+  cmap: jet
+temperature:
+  cmap: cmo.thermal
+salinity:
+  cmap: cmo.haline
+density:
+  cmap: cmo.dense
+chlorophyll_a:
+  cmap: cmo.algae
+beta_700nm:
+  cmap: cmo.thermal
+cdom:
+  cmap: cmo.thermal
+oxygen_concentration_shifted_mgL:
+  cmap: cmo.oxy
+oxygen_saturation_shifted:
+  cmap: cmo.oxy
+pH:
+  cmap: cmo.matter
+aragonite_saturation_state:
+  cmap: cmo.matter
+total_alkalinity:
+  cmap: cmo.matter
