@@ -2,7 +2,7 @@
 
 """
 Author: Lori Garzio on 4/28/2021
-Last modified: 2/18/2025
+Last modified: 2/19/2025
 Process final pH glider dataset to upload to the NCEI OA data portal
 (https://www.ncei.noaa.gov/access/ocean-carbon-acidification-data-system-portal/)
 """
@@ -25,7 +25,7 @@ def delete_attrs(da):
 
 
 def main(fname):
-    savedir = os.path.join(os.path.dirname(fname), 'ncei')
+    savedir = os.path.join(os.path.dirname(fname), 'ncei_pH')
     os.makedirs(savedir, exist_ok=True)
 
     ds = xr.open_dataset(fname)
@@ -58,7 +58,8 @@ def main(fname):
 
     # drop extra variables
     drop_vars = []
-    search_str = ['_hysteresis_test', '_qartod_', '_optimal_shift', 'ctd41cp_timestamp', 'water_depth']
+    search_str = ['_hysteresis_test', '_qartod_', '_optimal_shift', 'ctd41cp_timestamp', 'water_depth',
+                  'm_pitch', 'm_roll']
     for ss in search_str:
         append_vars = [x for x in ds.data_vars if ss in x]
         drop_vars.append(append_vars)
@@ -93,8 +94,9 @@ def main(fname):
         if 'multiplied by 10 to convert from bar to dbar' in ds.pressure.comment:
             ds.pressure.attrs['units'] = 'dbar'
 
-    # fix depth_interpolated standard_name
+    # fix depth_interpolated standard_name and units
     ds.depth_interpolated.attrs['standard_name'] = 'depth'
+    ds.depth_interpolated.attrs['units'] = 'm'
 
     # make sure valid_min and valid_max are the same data type as the variables
     for v in ds.data_vars:
@@ -134,10 +136,11 @@ def main(fname):
 
     df.to_csv(os.path.join(savedir, f'lonlat-{deploy}.csv'), header=None, index=None)
 
+    # save final .nc file
     savefile = os.path.join(savedir, f'{deploy}-delayed.nc')
     ds.to_netcdf(savefile, format="netCDF4", engine="netcdf4", unlimited_dims=["time"])
 
-    # test ncei formatting
+    # file to test formatting in IOOS compliance checker https://compliance.ioos.us/index.html
     sfile = os.path.join(savedir, f'{deploy}-delayed-test.nc')
     newds = ds.isel(time=slice(0, 100))
     newds.to_netcdf(sfile, format="netCDF4", engine="netcdf4", unlimited_dims=["time"])

@@ -20,7 +20,7 @@ plt.rcParams.update({'font.size': 13})
 
 
 def main(fname):
-    savedir = os.path.join(os.path.dirname(fname), 'ncei_plots')
+    savedir = os.path.join(os.path.dirname(fname), 'plots')
     os.makedirs(savedir, exist_ok=True)
 
     ds = xr.open_dataset(fname)
@@ -63,5 +63,5 @@ def main(fname):
 
 
 if __name__ == '__main__':
-    ncfile = '/Users/garzio/Documents/gliderdata/ru39-20240429T1522/ncei/ru39-20240429T1522-delayed.nc'
+    ncfile = '/Users/garzio/Documents/gliderdata/ru39-20240429T1522/ncei_pH/ru39-20240429T1522-delayed.nc'
     main(ncfile)
