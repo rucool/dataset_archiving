@@ -10,6 +10,7 @@ directory
 import numpy as np
 import os
 import yaml
+import time
 import dataset_archiving.common as cf
 
 
@@ -18,6 +19,7 @@ def flatten(lst):
 
 
 def main(deploy, version, aev, sdir):
+    start_time = time.time()  # Record the start time
     dsid = f'{deploy}-{version}'
 
     sdir = os.path.join(sdir, deploy)
@@ -65,6 +67,10 @@ def main(deploy, version, aev, sdir):
     ds = cf.return_erddap_nc(ru_server, dsid, **kwargs)
     fname = f'{dsid}.nc'
     ds.to_netcdf(os.path.join(sdir, fname))
+
+    end_time = time.time()  # Record the end time
+    elapsed_time = (end_time - start_time) / 60 # Calculate the elapsed time in minutes
+    print(f"Time elapsed: {elapsed_time:.2f} minutes")  # Print the elapsed time
 
 
 if __name__ == '__main__':
