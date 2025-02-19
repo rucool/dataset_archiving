@@ -105,7 +105,11 @@ def return_erddap_nc(server, ds_id, variables=None, constraints=None):
         e.constraints = constraints
     if variables:
         e.variables = variables
-    #ds = e.to_xarray(timeout=600)
+    
+    kwargs = dict()
+    kwargs['timeout'] = 600  # this isn't working
+
+    ds = e.to_xarray(**kwargs)
     ds = e.to_xarray()
     ds = ds.sortby(ds.time)
     return ds
