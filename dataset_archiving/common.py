@@ -94,22 +94,16 @@ def get_dataset_variables(server, dataset_id):
 
 
 def return_erddap_nc(server, ds_id, variables=None, constraints=None):
-    variables = variables or None
-    constraints = constraints or None
-
     e = ERDDAP(server=server,
                protocol='tabledap',
                response='nc')
+                      
     e.dataset_id = ds_id
     if constraints:
         e.constraints = constraints
     if variables:
         e.variables = variables
     
-    kwargs = dict()
-    kwargs['timeout'] = 600  # this isn't working
-
-    ds = e.to_xarray(**kwargs)
-    ds = e.to_xarray()
+    ds = e.to_xarray(requests_kwargs={"timeout": 600})  # increase timeout to 10 minutes
     ds = ds.sortby(ds.time)
     return ds
