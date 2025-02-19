@@ -187,8 +187,6 @@ def main(fname):
     dfmeta.to_csv(os.path.join(savedir, f'deployment_metadata-{deploy}.csv'), index=False)
 
     # print instrument metadata to csv
-    print('')
-    print('instruments:')
     instrument_vars = [x for x in list(ds.data_vars) if 'instrument_' in x]
 
     vardict = dict(name = instrument_vars,
