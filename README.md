@@ -30,8 +30,8 @@ The toolbox should now be installed to your conda environment.
 
 ## Post-processing Instructions
 
-Download glider .nc files to your local machine using (download_glider_dataset.py)[https://github.com/rucool/dataset_archiving/blob/master/download_glider_dataset.py]
+Download glider .nc files to your local machine using [download_glider_dataset.py](https://github.com/rucool/dataset_archiving/blob/master/download_glider_dataset.py)
 
 Post-process and make quick plots of the glider data variables for a quick check before archiving the datasets in the appropriate archive:
-1. (pH glider processing)[https://github.com/rucool/dataset_archiving/tree/master/pH_glider]
-2. (acoustic glider processing (e.g. AZFP and DMON))[https://github.com/rucool/dataset_archiving/tree/master/acoustics_glider]
+1. [pH glider processing](https://github.com/rucool/dataset_archiving/tree/master/pH_glider)
+2. [acoustic glider processing (e.g. AZFP and DMON)](https://github.com/rucool/dataset_archiving/tree/master/acoustics_glider)
