@@ -2,7 +2,7 @@
 
 """
 Author: Lori Garzio on 2/19/2025
-Last modified: 2/19/2025
+Last modified: 2/20/2025
 Process final acoustics glider datasets to archive:
 AZFP to NCEI (https://www.ncei.noaa.gov/products/water-column-sonar-data)
 DMON to NCEI (https://www.ncei.noaa.gov/products/passive-acoustic-data)
@@ -141,12 +141,13 @@ def main(fname, acoustics):
     newds.to_netcdf(sfile, format="netCDF4", engine="netcdf4", unlimited_dims=["time"])
 
     # print deployment information for NCEI metadata submission to csv
-    rownames = ['start', 'end', 'program', 'project', 'summary']
+    rownames = ['start', 'end', 'program', 'project', 'sea_name', 'summary']
     
     values = [pd.to_datetime(np.nanmin(ds.time.values)).strftime('%Y-%m-%d'),
               pd.to_datetime(np.nanmax(ds.time.values)).strftime('%Y-%m-%d'),
               ds.attrs['program'],
               ds.attrs['project'],
+              ds.attrs['sea_name'],
               ds.attrs['summary']]
     
     vardict = dict(name = rownames,
