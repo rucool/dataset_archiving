@@ -3,7 +3,7 @@
 """
 Author: Lori Garzio on 2/26/2025
 Modified from code written by Jessica Leonard
-Last modified: 3/14/2025
+Last modified: 3/17/2025
 After using the d3read software to process raw DMON .dtg files to .wav files, this script
 sorts and renames the .wav files based on the deployment start and end times.
 First, determines which .wav files contain deployment data based 
@@ -36,7 +36,7 @@ def main(filedirectory, deployment):
 
     # list .xml metadata files and find the minimum and maximum timestamps
     # make a dataframe and figure out which files contain deployment data
-    cols = ['filename', 'start_time', 'end_time', 'split_file', 'deploy_start', 'deploy_end']
+    cols = ['filename', 'start_time', 'end_time', 'split_file', 'deploy_start', 'deploy_end', 'diff_hours']
     rows = []
     xml_timefmt = '%Y,%m,%d,%H,%M,%S'
     xmlfiles = sorted([x for x in os.listdir(filedirectory) if x.endswith('.xml')])
@@ -50,23 +50,29 @@ def main(filedirectory, deployment):
         start = xml_data['TS'][np.logical_and(xml_data['SUFFIX']=='wav',~np.isnan(xml_data['CUE']))].item()
         xml_start = pd.to_datetime(start).tz_localize('UTC').round('s')
 
-        # TODO confirm the end time of the recording
+        # assume the end time of the recording is the max timestamp in the .xml file
         xml_end = pd.to_datetime(np.nanmax(xml_times)).tz_localize('UTC').round('s')
         print(f'file: {f}, start time: {xml_start}, end time: {xml_end}')
 
         # if the time range in the xml file overlaps with the deployment time range, figure out if the file needs
         # to be split and add to summary df
+        # split the files if they contain more than 3 hours of data outside of the deployment start/end times
         if (xml_start <= deployment_end) and (xml_end >= deployment_start):
             split = ''
             dstart = ''
             dend = ''
+            tdiff_hours = 0
             if xml_start < deployment_start:
-                split = 'split_start'
-                dstart = deployment_start
+                tdiff_hours = (deployment_start - xml_start).total_seconds() / 60 / 60
+                if tdiff_hours > 3:
+                    split = 'split_start'
+                    dstart = deployment_start
             if xml_end > deployment_end:
-                split = 'split_end'
-                dend = deployment_end
-            rows.append([f, xml_start, xml_end, split, dstart, dend])
+                tdiff_hours = (xml_end - deployment_end).total_seconds() / 60 / 60
+                if tdiff_hours > 3:
+                    split = 'split_end'
+                    dend = deployment_end
+            rows.append([f, xml_start, xml_end, split, dstart, dend, str(np.round(tdiff_hours, 2))])
 
     df = pd.DataFrame(rows, columns=cols)
     dfsavefile = os.path.join(filedirectory, f'{deployment}_dmon_wav_files_summary.csv')
