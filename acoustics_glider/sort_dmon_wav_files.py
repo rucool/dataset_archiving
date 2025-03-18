@@ -27,6 +27,10 @@ def main(filedirectory, deployment):
     os.makedirs(savedir, exist_ok=True)
     os.makedirs(savedir_split, exist_ok=True)
 
+    # preemptively add a split_files directory for the reformat_dmon_wav_files.sav to save files
+    # this will be empty until the files are split using Mark's program
+    os.makedirs(os.path.join(filedirectory, 'split_files'), exist_ok=True)
+
     # grab the deployment start and end times from the API
     glider_api = 'https://marine.rutgers.edu/cool/data/gliders/api/'
     deployment_api = requests.get(f'{glider_api}deployments/?deployment={deployment}').json()['data'][0]
