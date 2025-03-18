@@ -4,6 +4,7 @@
 - pressure
 - temperature
 - chlorophyll_a
+- oxygen_concentration_shifted
 - oxygen_concentration_shifted_mgL
 - oxygen_saturation_shifted
 - pH
