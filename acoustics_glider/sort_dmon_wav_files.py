@@ -3,7 +3,7 @@
 """
 Author: Lori Garzio on 2/26/2025
 Modified from code written by Jessica Leonard
-Last modified: 3/17/2025
+Last modified: 3/18/2025
 After using the d3read software to process raw DMON .dtg files to .wav files, this script
 sorts and renames the .wav files based on the deployment start and end times.
 First, determines which .wav files contain deployment data based 
@@ -103,7 +103,7 @@ def main(filedirectory, deployment):
             if file_ext == '.dtg':  # don't archive .dtg files
                 continue
             else:
-                shutil.copy(af_path, output_path)
+                shutil.move(af_path, output_path)
                 print(f'Copied {af} to {af_newname}')
 
     print('Finished sorting files')
