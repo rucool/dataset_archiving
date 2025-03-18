@@ -2,7 +2,7 @@
 
 """
 Author: Lori Garzio on 2/19/2025
-Last modified: 2/20/2025
+Last modified: 3/18/2025
 Process final acoustics glider datasets to archive:
 AZFP to NCEI (https://www.ncei.noaa.gov/products/water-column-sonar-data)
 DMON to NCEI (https://www.ncei.noaa.gov/products/passive-acoustic-data)
@@ -140,6 +140,27 @@ def main(fname, acoustics):
     newds = ds.isel(time=slice(0, 100))
     newds.to_netcdf(sfile, format="netCDF4", engine="netcdf4", unlimited_dims=["time"])
 
+    # print variable names in file to double check
+    vardict = dict()
+    for v in list(ds.coords):
+        try:
+            units = ds[v].units
+        except AttributeError:
+            units = ''
+        vardict[v] = dict(units=units,
+                          long_name=ds[v].long_name)
+    for v in list(ds.data_vars):
+        try:
+            units = ds[v].units
+        except AttributeError:
+            units = ''
+        vardict[v] = dict(units=units,
+                          long_name=ds[v].long_name)
+
+    dfmeta = pd.DataFrame(vardict)
+    dfmeta = dfmeta.transpose()
+    dfmeta.to_csv(os.path.join(savedir, f'variables-{deploy}.csv'))
+    
     # print deployment information for NCEI metadata submission to csv
     rownames = ['start', 'end', 'program', 'project', 'sea_name', 'summary']
     
@@ -181,6 +202,6 @@ def main(fname, acoustics):
     
 
 if __name__ == '__main__':
-    ncfile = '/Users/garzio/Documents/gliderdata/ru39-20240429T1522/ru39-20240429T1522-profile-sci-delayed.nc'
-    acoustics = 'azfp'  # 'azfp' or 'dmon'
+    ncfile = '/Users/garzio/Documents/gliderdata/ru40-20230817T1522/ru40-20230817T1522-profile-sci-delayed.nc'
+    acoustics = 'dmon'  # 'azfp' or 'dmon'
     main(ncfile, acoustics)
