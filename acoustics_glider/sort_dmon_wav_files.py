@@ -60,7 +60,7 @@ def main(filedirectory, deployment):
 
         # if the time range in the xml file overlaps with the deployment time range, figure out if the file needs
         # to be split and add to summary df
-        # split the files if they contain more than 3 hours of data outside of the deployment start/end times
+        # split the files if they contain more than 6 hours of data outside of the deployment start/end times
         if (xml_start <= deployment_end) and (xml_end >= deployment_start):
             split = ''
             dstart = ''
@@ -68,12 +68,12 @@ def main(filedirectory, deployment):
             tdiff_hours = 0
             if xml_start < deployment_start:
                 tdiff_hours = (deployment_start - xml_start).total_seconds() / 60 / 60
-                if tdiff_hours > 3:
+                if tdiff_hours > 6:
                     split = 'split_start'
                     dstart = deployment_start
             if xml_end > deployment_end:
                 tdiff_hours = (xml_end - deployment_end).total_seconds() / 60 / 60
-                if tdiff_hours > 3:
+                if tdiff_hours > 6:
                     split = 'split_end'
                     dend = deployment_end
             rows.append([f, xml_start, xml_end, split, dstart, dend, str(np.round(tdiff_hours, 2))])
@@ -107,8 +107,8 @@ def main(filedirectory, deployment):
             if file_ext == '.dtg':  # don't archive .dtg files
                 continue
             else:
-                shutil.move(af_path, output_path)
-                print(f'Moved {af} to {af_newname}')
+                shutil.copy(af_path, output_path)
+                print(f'Copied {af} to {af_newname}')
 
     print('Finished sorting files')
     
