@@ -72,6 +72,10 @@ def apply_qartod_qc(dataset, qc_variety='suspect_failed', add_comment=False):
             raise(ValueError(f'Invalid qc_variety provided: {qc_variety}. Valid options are "suspect_failed" or "failed_only"'))
 
         for tv in target_var:
+            try:
+                dataset[tv]
+            except KeyError:
+                continue
             # update comment to indicate that QC was applied
             if add_comment:
                 if not hasattr(dataset[tv], 'comment'):
