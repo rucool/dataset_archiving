@@ -14,11 +14,11 @@ DMON (WHOI Digital Acoustic Monitoring Instrument) glider datasets are QC'd and 
 
 2. Post-process ([acoustics_glider_to_archive.py](https://github.com/rucool/dataset_archiving/blob/master/acoustics_glider/acoustics_glider_to_archive.py)) and make quick plots ([plot_acoustics_glider.py](https://github.com/rucool/dataset_archiving/blob/master/acoustics_glider/plot_acoustics_glider.py)) of the glider data variables for a quick check before archiving
 
-### DMON raw data files
+### DMON raw data files - this must be done on a PC computer
 
 1. Download raw .dtg files from the server
 
-2. Process the raw files to .wav using d3read software on a PC computer.
+2. Process the raw files to .wav using d3read software.
 
 3. [sort_dmon_wav_files.py](https://github.com/rucool/dataset_archiving/blob/master/acoustics_glider/sort_dmon_wav_files.py): Figure out which files contain deployment data and sort the files into folders to either a) archive directly, or b) split to remove non-deployment data.
 

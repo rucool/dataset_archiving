@@ -108,7 +108,7 @@ def main(filedirectory, deployment):
                 continue
             else:
                 shutil.move(af_path, output_path)
-                print(f'Copied {af} to {af_newname}')
+                print(f'Moved {af} to {af_newname}')
 
     print('Finished sorting files')
     
