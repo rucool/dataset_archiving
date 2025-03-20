@@ -5,12 +5,14 @@ Author: Lori Garzio on 2/26/2025
 Modified from code written by Jessica Leonard
 Last modified: 3/20/2025
 After using the d3read software to process raw DMON .dtg files to .wav files, this script
-sorts and renames the .wav files based on the deployment start and end times.
-First, determines which .wav files contain deployment data based 
-on the timestamps in the .xml files and saves those files to a new directory for archiving. 
-Also determines which files need to be split up (potentially the first and last files) to 
-remove some non-deployment data. Move those files to a new directory to split using
-Mark Baumgartner's reformat_dmon_wav_files.sav program.
+1. renames the files to contain the deployment ID and moves those to a folder called "renamed"
+2. reads in the .xml metadata files to determine which .wav files contain deployment data
+3. determines if the .wav files need to be split based on the timestamps in the .xml files (a files
+   needs to be split if it contains more than 6 hours of data outside of the deployment start/end times)
+4. spits out a summary .csv file
+5. if a file contains deployment data and doesn't need to be split, moves the files to directory "files_to_archive"
+
+If there are files that must be split, use Mark Baumgartner's reformat_dmon_wav_files.sav program.
 """
 
 import os
@@ -103,12 +105,12 @@ def main(filedirectory, deployment):
             # find all of the files associated with the current .xml file, rename them, and save them to a new directory
             associated_files = [x for x in os.listdir(savedir_rename) if row['filename'].split('.')[0] in x]
             for af in associated_files:
-                output_path = os.path.join(savedir, af)
+                file_ext = os.path.splitext(af)[-1]
                 
                 if file_ext == '.dtg':  # don't archive .dtg files
                     continue
                 else:
-                    shutil.copy(os.path.join(savedir_rename, af), output_path)
+                    shutil.copy(os.path.join(savedir_rename, af), os.path.join(savedir, af))
                     print(f'Copied {af} to "files_to_archive"')
 
     print('Finished sorting files')
