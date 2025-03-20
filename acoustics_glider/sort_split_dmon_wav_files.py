@@ -73,6 +73,7 @@ def main(filedirectory, deployment):
     
 
 if __name__ == '__main__':
-    filedir = '/Users/garzio/Documents/gliderdata/ru40-20230629T1430/from-dmon/split_files'
-    deployment = 'ru40-20230629T1430'
+    filedir = '/Users/garzio/Documents/gliderdata/ru40-20240429T1528/from-dmon/split_files'
+    # filedir = 'C:/Users/rucool/Documents/DMON/2024/ru40-20240429T1528/from-dmon/split_files'  # PC directory
+    deployment = 'ru40-20240429T1528'
     main(filedir, deployment)
