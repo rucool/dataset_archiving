@@ -26,19 +26,19 @@ DMON (WHOI Digital Acoustic Monitoring Instrument) glider datasets are QC'd and 
 
     a. Navigate to:
 	
-        `Program Files > NV5 > IDL91 > IDL Virtual Machine`
+        Program Files > NV5 > IDL91 > IDL Virtual Machine
 		
     b. In the VM, open the program: 
 	
-        `Documents > DMON > software > reformat_dmon_wav_files.sav`
+        Documents > DMON > software > reformat_dmon_wav_files.sav
 		
     c. Choose the folder with DMON data: 
 	
-        `Documents > DMON > yyyy > deployment > from-dmon > renamed`
+        Documents > DMON > yyyy > deployment > from-dmon > renamed
 		
     d. Choose the folder to save split files: 
 	
-        `Documents > DMON > yyyy > deployment > from-dmon > split_files`
+        Documents > DMON > yyyy > deployment > from-dmon > split_files
 		
     e. Click Go!
 
