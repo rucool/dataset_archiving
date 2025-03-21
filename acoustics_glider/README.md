@@ -22,6 +22,15 @@ DMON (WHOI Digital Acoustic Monitoring Instrument) glider datasets are QC'd and 
 
 3. [sort_dmon_wav_files.py](https://github.com/rucool/dataset_archiving/blob/master/acoustics_glider/sort_dmon_wav_files.py): Renames all files to use the deployment ID, figures out which files contain deployment data, sorts those files into the "files_to_archive" folder, and determines if any files need to be split to remove to remove non-deployment data. Spits out a summary .csv file so you can figure out if you need to split the .wav files.
 
-4. If files need to be split, use Mark Baumgartner's reformat_dmon_wav_files.sav program to split the .wav files in the "renamed" directory into smaller files. Must split ALL of the files because sometimes the program has issues splitting specific files. Save the split files into the directory "split_files".
+4. If files need to be split, use Mark Baumgartner's reformat_dmon_wav_files.sav program to split the .wav files in the "renamed" directory into smaller files. Must split ALL of the files because sometimes the program has issues splitting specific files. 
+    a. Navigate to:
+        `Program Files > NV5 > IDL91 > IDL Virtual Machine`
+    b. In the VM, open the program: 
+        `Documents > DMON > software > reformat_dmon_wav_files.sav`
+    c. Choose the folder with DMON data: 
+        `Documents > DMON > yyyy > deployment > from-dmon > renamed`
+    d. Choose the folder to save split files: 
+        `Documents > DMON > yyyy > deployment > from-dmon > split_files`
+    e. Click Go!
 
 5. [sort_split_dmon_wav_files.py](https://github.com/rucool/dataset_archiving/blob/master/acoustics_glider/sort_split_dmon_wav_files.py): Move the appropriate split .wav files that contain deployment data into the "files_to_archive" folder.
