@@ -5,6 +5,14 @@ Author: Lori Garzio on 4/28/2021
 Last modified: 2/19/2025
 Process final pH glider dataset to upload to the NCEI OA data portal
 (https://www.ncei.noaa.gov/access/ocean-carbon-acidification-data-system-portal/)
+1. Apply QC
+2. Drop extra variables that we don't need to include in the archive
+3. Remove pH/TA/omega when depth_interpolated < 1 m (due to noise at surface)
+4. Fix some historically incorrect metadata (if necessary)
+5. Add additional metadata specific to pH datasets
+6. Export a lonlat.csv file required for NCEI data submission
+7. Save the final netCDF file
+8. Print variable and deployment information to a csv file to help with NCEI submission
 """
 
 import os
