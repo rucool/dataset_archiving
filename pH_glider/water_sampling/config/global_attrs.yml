@@ -1,0 +1,47 @@
+comment: pH, TA, and DIC measurements from discrete water samples taken at glider deployments and recoveries. Water samples were collected at multiple depths via Niskin bottles mounted on a CTD-rosette, or via individual Niskin bottle casts. pH (on the Total pH scale) of water samples was measured spectrophotometrically at 25°C with purified meta-cresol purple (mCP, Liu et al. 2011) using 10 cm pathlength cylindrical glass cells and an Agilent Technologies Cary 8454 UV-Vis spectrometer. pH was calculated according to the equations presented in Douglas and Byrne (2017). Total alkalinity (TA) titrations for water samples were performed by a custom-built titration apparatus, following the approach of Standard Operating Procedure 3b (Dickson et al. 2007). These values have not been corrected for temperature, pressure, or salinity.
+acknowledgement: Funding provided by the NOAA Ocean Acidification Program and U.S. Integrated Ocean Observing System (project=NOAA-OAP), New Jersey's Research & Monitoring Initiative (RMI) (New Jersey Department of Environmental Protection, New Jersey Board of Public Utilities) (project=RMI and NJDEP).
+contributor_name: Grace Saba, Josh Kohut, Baoshan Chen, Christopher Hunt, Roy Price, Tyler Menz, Dave Aragon, Nicole Waite, Brian Buckingham, Jessica Leonard, John Kerfoot, Lori Garzio, Laura Nazzaro
+contributor_role: Principal Investigator, Principal Investigator, Collaborator, Collaborator, Collaborator, Laboratory Technician, Glider Pilot, Glider Pilot and Field Technician, Glider Pilot and Field Technician, Glider Pilot and Field Technician, Data Management, Data Management, Data Management
+summary: For each project, underwater Slocum gliders were deployed with an integrated CTD and deep rated version of the Ion Sensitive Field Effect Transistor (ISFET)-based pH sensor as well as other sensors. Water samples were taken during deployment and recovery to ground-truth the glider-based pH sensor. Full-resolution quality-controlled glider datasets can be downloaded via the NCEI Ocean Carbon and Acidification Data System (https://www.ncei.noaa.gov/products/ocean-carbon-acidification-data-system). Full-resolution raw glider datasets with associated QC variables can be downloaded at https://slocum-data.marine.rutgers.edu/erddap/index.html.
+project: NOAA OAP (Ocean Acidification Program), RMI Eco-gliders, NJDEP
+program: 'Collaborative Research: Optimizing Ocean Acidification Observations for Model Parameterization in the Coupled Slope Water System of the U.S. Northeast Large Marine Ecosystem, An ecological and oceanographic baseline to inform offshore wind development over the continental shelf off the coast of New Jersey, NJDEP'
+references: Saba et al 2019 https://doi.org/10.3389/fmars.2019.00664; Wright-Fairbanks et al 2020 https://doi.org/10.1029/2020JC016505; PyCO2SYS (Humphreys et al. (2020) doi:10.5281/zenodo.3744275; Lewis and Wallace (1998)); Liu et al 2011 https://doi.org/10.4319/lo.1998.43.4.0657; Douglas and Byrne 2017 https://doi.org/10.1016/j.marchem.2017.02.004; Dickson, A.G., Sabine, C.L. and Christian, J.R. (Eds.) 2007. Guide to best practices for ocean CO2 measurements. PICES Special Publication 3, 191 pp. ("Guide" in one PDF file)
+## constant
+title: pH Glider Carbonate Chemistry Water Sampling
+keywords: ''
+Conventions: ACDD 1.3
+id: pH_glider_carb_chem_water_sampling
+#naming_authority: 
+license: see Data Use Agreement
+#standard_name_vocabulary: 
+creator_name: Rutgers Marine Ecosystem Data Team
+creator_email: ecosystemdata@marine.rutgers.edu
+#creator_url: 
+#creator_country:
+creator_institution: Rutgers University
+#creator_sector: 
+institution: Rutgers University
+infoUrl: https://rowlrs.marine.rutgers.edu/
+publisher_name: Rutgers Marine Ecosystem Data Team
+publisher_email: ecosystemdata@marine.rutgers.edu
+#publisher_url:
+publisher_institution: Rutgers University
+#publisher_country:
+geospatial_vertical_positive: up
+geospatial_bounds_crs: 'EPSG:6347'
+## python coded
+#history: 
+#source: 
+#processing_level:
+#date_created: 
+#geospatial_vertical_min: 
+#geospatial_vertical_max: 
+## erddap coded
+# geospatial_lat_min:
+# geospatial_lon_min: 
+# geospatial_lat_max:
+# geospatial_lon_max:
+# time_coverage_start:
+# time_coverage_end:
+# geospatial_lat_units:
+# geospatial_lon_units: 
