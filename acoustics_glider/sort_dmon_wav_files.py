@@ -3,7 +3,7 @@
 """
 Author: Lori Garzio on 2/26/2025
 Modified from code written by Jessica Leonard
-Last modified: 3/20/2025
+Last modified: 4/18/2025
 After using the d3read software to process raw DMON .dtg files to .wav files, this script
 1. renames the files to contain the deployment ID and moves those to a folder called "renamed"
 2. reads in the .xml metadata files to determine which .wav files contain deployment data
@@ -89,6 +89,8 @@ def main(filedirectory, deployment):
                     split = 'split_end'
                     dend = deployment_end
             rows.append([f, xml_start, xml_end, split, dstart, dend, str(np.round(tdiff_hours, 2))])
+        else:
+            rows.append([f, xml_start, xml_end, 'dont include', '', '', 0])
 
     df = pd.DataFrame(rows, columns=cols)
     dfsavefile = os.path.join(filedirectory, f'{deployment}_dmon_wav_files_summary.csv')
