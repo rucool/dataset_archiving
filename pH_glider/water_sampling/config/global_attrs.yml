@@ -1,7 +1,7 @@
 comment: pH, TA, and DIC measurements from discrete water samples taken at glider deployments and recoveries. Water samples were collected at multiple depths via Niskin bottles mounted on a CTD-rosette, or via individual Niskin bottle casts. pH (on the Total pH scale) of water samples was measured spectrophotometrically at 25°C with purified meta-cresol purple (mCP, Liu et al. 2011) using 10 cm pathlength cylindrical glass cells and an Agilent Technologies Cary 8454 UV-Vis spectrometer. pH was calculated according to the equations presented in Douglas and Byrne (2017). Total alkalinity (TA) titrations for water samples were performed by a custom-built titration apparatus, following the approach of Standard Operating Procedure 3b (Dickson et al. 2007). These values have not been corrected for temperature, pressure, or salinity.
-acknowledgement: Funding provided by the NOAA Ocean Acidification Program and U.S. Integrated Ocean Observing System (project=NOAA-OAP), New Jersey's Research & Monitoring Initiative (RMI) (New Jersey Department of Environmental Protection, New Jersey Board of Public Utilities) (project=RMI and NJDEP).
-contributor_name: Grace Saba, Josh Kohut, Baoshan Chen, Christopher Hunt, Roy Price, Tyler Menz, Dave Aragon, Nicole Waite, Brian Buckingham, Jessica Leonard, John Kerfoot, Lori Garzio, Laura Nazzaro
-contributor_role: Principal Investigator, Principal Investigator, Collaborator, Collaborator, Collaborator, Laboratory Technician, Glider Pilot, Glider Pilot and Field Technician, Glider Pilot and Field Technician, Glider Pilot and Field Technician, Data Management, Data Management, Data Management
+acknowledgement: Funding provided by the NOAA Ocean Acidification Program and U.S. Integrated Ocean Observing System (NOAA-OAP), New Jersey's Research & Monitoring Initiative (RMI) (New Jersey Department of Environmental Protection, New Jersey Board of Public Utilities) (RMI and NJDEP).
+contributor_name: Rutgers Center for Ocean Observing Leadership, University of New Hampshire Ocean Process Analysis Laboratory, Stony Brook University Coastal Fluxes Lab
+contributor_role: Sample Collection and Data Management, Sample Processing, Sample Processing
 summary: For each project, underwater Slocum gliders were deployed with an integrated CTD and deep rated version of the Ion Sensitive Field Effect Transistor (ISFET)-based pH sensor as well as other sensors. Water samples were taken during deployment and recovery to ground-truth the glider-based pH sensor. Full-resolution quality-controlled glider datasets can be downloaded via the NCEI Ocean Carbon and Acidification Data System (https://www.ncei.noaa.gov/products/ocean-carbon-acidification-data-system). Full-resolution raw glider datasets with associated QC variables can be downloaded at https://slocum-data.marine.rutgers.edu/erddap/index.html.
 project: NOAA OAP (Ocean Acidification Program), RMI Eco-gliders, NJDEP
 program: 'Collaborative Research: Optimizing Ocean Acidification Observations for Model Parameterization in the Coupled Slope Water System of the U.S. Northeast Large Marine Ecosystem, An ecological and oceanographic baseline to inform offshore wind development over the continental shelf off the coast of New Jersey, NJDEP'
@@ -20,8 +20,8 @@ creator_email: ecosystemdata@marine.rutgers.edu
 #creator_country:
 creator_institution: Rutgers University
 #creator_sector: 
-institution: Rutgers University
-infoUrl: https://rowlrs.marine.rutgers.edu/
+institution: Rutgers University, University of New Hampshire, Stony Brook University
+infoUrl: https://rucool.marine.rutgers.edu/, https://eos.unh.edu/ocean-process-analysis-laboratory, https://you.stonybrook.edu/royprice/
 publisher_name: Rutgers Marine Ecosystem Data Team
 publisher_email: ecosystemdata@marine.rutgers.edu
 #publisher_url:
