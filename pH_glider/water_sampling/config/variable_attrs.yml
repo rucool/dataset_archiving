@@ -1,64 +1,98 @@
 project:
-    description: Project for glider mission
+    attrs:
+        description: Project for glider mission
 station_id:
-    description: Station name for water sampling
+    attrs:
+        description: Station name for water sampling
 glider_trajectory:
-    description: Glider deployment/trajectory ID
+    attrs:
+        description: Glider deployment/trajectory ID
 deployment_recovery:
-    description: Water sampling taken at glider deployment or recovery
+    attrs:
+        description: Water sampling taken at glider deployment or recovery
 cast:
-    description: Niskin or CTD Rosette cast number
+    attrs:
+        description: Niskin or CTD Rosette cast number
+    decimal: 0
 niskin:
-    Description: Niskin bottle number
+    attrs:
+        description: Niskin bottle number
+    decimal: 0
 depth:
-    long_name: Depth
-    units: m
-    standard_name: depth
-    description: Depth at which water samples were collected
+    attrs:
+        long_name: Depth
+        units: m
+        standard_name: depth
+        description: Depth at which water samples were collected
+    decimal: 0
 time:
-    long_name: Time
-    standard_name: time
-    description: Timestamp (UTC) of the water sample collection
+    attrs:
+        long_name: Time
+        standard_name: time
+        description: Timestamp (UTC) of the water sample collection
 longitude:
-    standard_name: longitude
-    long_name: Longitude
-    units: degrees_east
-    description: Longitude of the water sample collection
+    attrs:
+        standard_name: longitude
+        long_name: Longitude
+        units: degrees_east
+        description: Longitude of the water sample collection
+    decimal: 6
 latitude:
-    standard_name: latitude
-    long_name: Latitude 
-    units: degrees_north
-    description: Latitude of the water sample collection
+    attrs:
+        standard_name: latitude
+        long_name: Latitude 
+        units: degrees_north
+        description: Latitude of the water sample collection
+    decimal: 6
 temperature:
-    units: degrees C
-    long_name: Sea Water Temperature
-    standard_name: sea_water_temperature
-    description: Sea water temperature of the water sample, measured by the in-situ CTD cast or by the glider when CTD cast data were not available
+    attrs:
+        units: degrees C
+        long_name: Sea Water Temperature
+        standard_name: sea_water_temperature
+        description: Sea water temperature of the water sample, measured by the in-situ CTD cast or by the glider when CTD cast data were not available
+    decimal: 2
 salinity:
-    units: '1'
-    long_name: Salinity
-    standard_name: sea_water_practical_salinity
-    description: Salinity of the water sample, measured by the in-situ CTD cast or by the glider when CTD cast data were not available
+    attrs:
+        units: '1'
+        long_name: Sea Water Salinity
+        standard_name: sea_water_practical_salinity
+        description: Salinity of the water sample, measured by the in-situ CTD cast or by the glider when CTD cast data were not available
+    decimal: 2
 pH:
-    units: '1'
-    long_name: pH
-    standard_name: sea_water_ph_reported_on_total_scale
-    description: Average pH (on the Total pH scale) measured at 25°C from the water samples.
+    attrs:
+        units: '1'
+        long_name: pH
+        standard_name: sea_water_ph_reported_on_total_scale
+        description: Average pH (on the Total pH scale) measured at 25°C from the water samples.
+    decimal: 4
 pH_stdev:
-    units: '1'
-    description: Standard deviation of pH.
+    attrs:
+        units: '1'
+        long_name: pH Standard Deviation
+        description: Standard deviation of pH.
+    decimal: 4
 TA:
-    units: micromoles kg-1
-    long_name: Total Alkalinity
-    description: Average total alkalinity measured at 25°C from the water samples.
+    attrs:
+        units: micromoles kg-1
+        long_name: Total Alkalinity
+        description: Average total alkalinity measured at 25°C from the water samples.
+    decimal: 1
 TA_stdev:
-    units: micromoles kg-1
-    description: Standard deviation of total alkalinity
+    attrs:
+        units: micromoles kg-1
+        long_name: TA Standard Deviation
+        description: Standard deviation of total alkalinity
+    decimal: 1
 DIC:
-    units: micromoles kg-1
-    long_name: Dissolved Inorganic Carbon
-    description: Average Dissolved Inorganic Carbon measured at 25°C from the water samples.
+    attrs:
+        units: micromoles kg-1
+        long_name: Dissolved Inorganic Carbon
+        description: Average Dissolved Inorganic Carbon measured at 25°C from the water samples.
+    decimal: 1
 DIC_stdev:
-    units: micromoles kg-1
-    description: Standard deviation of DIC
+    attrs:
+        units: micromoles kg-1
+        long_name: DIC Standard Deviation
+        description: Standard deviation of DIC
+    decimal: 1
 

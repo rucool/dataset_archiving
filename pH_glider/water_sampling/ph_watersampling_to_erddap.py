@@ -101,7 +101,13 @@ def main():
 
     for variable in list(ds.data_vars):
         try:
-            ds[variable].attrs = va[variable]
+            ds[variable].attrs = va[variable]['attrs']
+        except KeyError:
+            continue
+        try:  # round to specified number of decimal places
+            ds[variable].values = np.round(ds[variable].values, va[variable]['decimal'])
+            if va[variable]['decimal'] == 0:
+                ds[variable].values = ds[variable].values.astype(int)
         except KeyError:
             continue
 
@@ -110,8 +116,8 @@ def main():
     for k in ds.data_vars:
         if k in ['project', 'station_id', 'glider_trajectory', 'deployment_recovery']:
             encoding[k] = dict(zlib=False, dtype=object, _FillValue=None)
-        elif k in ['cast', 'niskin']:
-            encoding[k] = dict(zlib=True, dtype=np.int32, _FillValue=np.float32(-9999))
+        elif k in ['cast', 'niskin', 'depth']:
+            encoding[k] = dict(zlib=True, dtype=np.int32, _FillValue=np.int32(-9999))
         else:
             encoding[k] = dict(zlib=True, dtype=np.float32, _FillValue=np.float32(-9999.0))
 
