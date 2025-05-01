@@ -1,0 +1,119 @@
+glider_trajectory:
+    attrs:
+        description: ID of the glider deployment
+deployment_recovery:
+    attrs:
+        description: Net tow performed at glider deployment or recovery
+tow_number:
+    attrs:
+        description: Replicate cast number of the discrete net tow
+    decimal: 0
+season:
+    attrs:
+        description: Season of the year assigned to the glider deployment
+time:
+    attrs:
+        long_name: Time
+        standard_name: time
+        description: Start timestamp (UTC) of the net tow
+tow_duration:
+    attrs:
+        long_name: Tow Duration
+        description: Duration of the net tow
+        units: minutes
+    decimal: 0
+latitude:
+    attrs:
+        standard_name: latitude
+        long_name: Latitude 
+        units: degrees_north
+        description: Start latitude of the net tow
+    decimal: 6
+longitude:
+    attrs:
+        standard_name: longitude
+        long_name: Longitude
+        units: degrees_east
+        description: Start longitude of the net tow
+    decimal: 6
+latitude_end:
+    attrs:
+        standard_name: latitude
+        long_name: Latitude 
+        units: degrees_north
+        description: End latitude of the net tow
+    decimal: 6
+longitude_end:
+    attrs:
+        standard_name: longitude
+        long_name: Longitude
+        units: degrees_east
+        description: End longitude of the net tow
+    decimal: 6
+sample_notes:
+    attrs:
+        description: Notes about the sample from collection or identification
+water_column_depth:
+    attrs:
+        long_name: Water Column Depth
+        standard_name: depth
+        description: Depth of the water column
+        units: m
+    decimal: 0
+depth:
+    attrs:
+        long_name: Net Depth
+        description: Maximum depth the net reached during the oblique tow. This was estimated using wire angle and length of wire until April 2025 when the depth was measured using a HOBO Titanium 250-Foot Depth Water Level Data Logger attached to the net.
+        units: m
+    decimal: 0
+volume_filtered:
+    attrs:
+        description: The volume of water filtered by the zooplankton net during the tow based on the flowmeter and the formula =(([flowmeter value at end of tow - [flowmeter value at start of tow]) * 26873/999999) * (3.14 * [net radius]^2)
+        units: m3
+    decimal: 2
+taxa:
+    attrs:
+        description: Zooplankton identification to the lowest feasible taxonomic level
+taxa_group:
+    attrs:
+        description: Broader taxonomic grouping of the zooplankton taxa
+count:
+    attrs:
+        units: individuals
+        long_name: Zooplankton Count
+        description: Total count, extrapolated from a split and counted subsample (when applicable)
+    decimal: 0
+concentration:
+    attrs:
+        units: individuals m-3
+        long_name: Zooplankton Concentration
+        description: Calculated from count divided by volume_filtered
+    decimal: 2
+temperature_min:
+    attrs:
+        units: degrees C
+        long_name: Minimum Sea Water Temperature
+        standard_name: sea_water_temperature
+        description: Minimum sea water temperature encountered during the net tow. Measured by the collocated glider until April 2025 when the temperature was measured using a HOBO Titanium 250-Foot Depth Water Level Data Logger attached to the net.
+    decimal: 2
+temperature_max:
+    attrs:
+        units: degrees C
+        long_name: Maximum Sea Water Temperature
+        standard_name: sea_water_temperature
+        description: Maximum sea water temperature encountered during the net tow. Measured by the collocated glider until April 2025 when the temperature was measured using a HOBO Titanium 250-Foot Depth Water Level Data Logger attached to the net.
+    decimal: 2
+salinity_min:
+    attrs:
+        units: '1'
+        long_name: Minimum Sea Water Salinity
+        standard_name: sea_water_practical_salinity
+        description: Minimum sea water salinity encountered during the net tow, measured by the collocated glider.
+    decimal: 2
+salinity_max:
+    attrs:
+        units: '1'
+        long_name: Maximum Sea Water Salinity
+        standard_name: sea_water_practical_salinity
+        description: Maximum sea water salinity encountered during the net tow, measured by the collocated glider.
+    decimal: 2
