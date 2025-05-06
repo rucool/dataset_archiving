@@ -1,6 +1,9 @@
 glider_trajectory:
     attrs:
         description: ID of the glider deployment
+acoustics_configuration:
+    attrs:
+        description: Transducer configuration of the on-board echo sounder. Zooplankton (120, 200, 455 and 769 kHz) or fish (38, 120, and 200 kHz))
 deployment_recovery:
     attrs:
         description: Net tow performed at glider deployment or recovery
@@ -10,7 +13,7 @@ tow_number:
     decimal: 0
 season:
     attrs:
-        description: Season of the year assigned to the glider deployment
+        description: Season assigned to the glider deployment
 time:
     attrs:
         long_name: Time

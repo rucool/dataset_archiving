@@ -13,7 +13,6 @@ import glob
 import numpy as np
 import pandas as pd
 import yaml
-import xarray as xr
 import os
 pd.set_option('display.width', 320, "display.max_columns", 15)  # for display in pycharm console
 
