@@ -10,7 +10,7 @@ DMON (WHOI Digital Acoustic Monitoring Instrument) glider datasets are QC'd and 
 
 ## Post-processing Instructions
 
-1. For each deployment, download glider .nc files to your local machine using [download_glider_dataset.py](https://github.com/rucool/dataset_archiving/blob/master/download_glider_dataset.py)
+1. For each deployment, download glider .nc files to your local machine using [download_glider_dataset.py](https://github.com/rucool/dataset_archiving/blob/master/download_glider_dataset.py) For DMON datasets, add_engineering_vars = False and for AZFP datasets, add_engineering_vars = True.
 
 2. Post-process ([acoustics_glider_to_archive.py](https://github.com/rucool/dataset_archiving/blob/master/acoustics_glider/acoustics_glider_to_archive.py)) and make quick plots ([plot_acoustics_glider.py](https://github.com/rucool/dataset_archiving/blob/master/acoustics_glider/plot_acoustics_glider.py)) of the glider data variables for a quick check before archiving
 
