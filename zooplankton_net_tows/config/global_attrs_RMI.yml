@@ -1,11 +1,11 @@
-comment: Zooplankton identification and enumeration from discrete samples taken at glider deployments and recoveries, often with an on-board ASL Acoustic Zooplankton Fish Profiler (AZFP) multi-frequency echo sounder with transducers configured for zooplankton (120, 200, 455 and 769 kHz). Zooplankton were collected by performing replicate oblique tows from the surface to approximately 5 m above the seafloor with a 0.25 m^2, 200 micron mesh net with filtering cod-end and preserved in 10% formalin. Net depth was estimated using wire angle and length of wire until April 2025 when the depth was measured using a HOBO Titanium 250-Foot Depth Water Level Data Logger attached to the net. In the lab, each tow was split to obtain a representative sample, and individual zooplankton were identified to lowest feasible taxonomic group and counted using a dissecting stereo microscope.
-acknowledgement: Funding provided by New Jersey's Research & Monitoring Initiative (RMI) (New Jersey Department of Environmental Protection, New Jersey Board of Public Utilities).
+comment: Zooplankton identification and enumeration from discrete tow samples taken at deployments and recoveries of gliders often equipped with an on-board ASL Acoustic Zooplankton Fish Profiler (AZFP) multi-frequency echo sounder with transducers configured for zooplankton (120, 200, 455 and 769 kHz). Zooplankton were collected aboard the vessel at glider deployment and recovery by performing replicate oblique tows from the surface to approximately 5 m above the seafloor with a 0.25 m^2, 200 micron mesh net with filtering cod-end and preserved in 10% buffered formalin. Net depth was estimated using wire angle and length of wire until April 2025 when the depth was measured using a HOBO Titanium 250-Foot Depth Water Level Data Logger attached to the net. In the lab, each tow was split to obtain a representative sample, and individual zooplankton were identified to lowest feasible taxonomic group and counted using a dissecting stereo microscope.
+acknowledgement: Funding provided by The Research and Monitoring Initiative (RMI; administered by NJDEP and New Jersey Board of Public Utilities, BPU)
 contributor_name: Grace Saba, Delphine Mossman, Lori Garzio, Jessica DeFeo, Adam Kos
 contributor_role: Principal Investigator, Technician, Technician, Researcher, Researcher
 summary: This project is conducting a seasonal baseline survey with a pair of underwater Slocum gliders deployed in each season with a full complement of available sensors to simultaneously map oceanographic and ecological variables. Zooplankton samples were taken during glider deployments and recoveries. When a zooplankton-configured ASL Acoustic Zooplankton Fish Profiler (AZFP) was on board the glider, these samples were used to ground-truth the glider-based acoustic zooplankton concentration and biomass estimates. Full-resolution quality-controlled glider datasets and associated raw and processed acoustic data are archived at NCEI's Water Column Sonar Data repository https://www.ncei.noaa.gov/products/water-column-sonar-data. Full-resolution raw glider datasets that do not contain the acoustic data can be downloaded at https://slocum-data.marine.rutgers.edu/erddap/index.html.
 project: RMI Eco-gliders
-program: An ecological and oceanographic baseline to inform offshore wind development over the continental shelf off the coast of New Jersey
-references: Zooplankton of the Atlantic and Gulf Coasts 2nd ed 2012 https://doi.org/10.1353/book.19394; McClatchie et al., 2000, https://doi.org/10.1016/S0165-7836(00)00168-5
+program: An ecological and oceanographic baseline to inform offshore wind development over the continental shelf off the coast of New Jersey; An ecological and oceanographic monitoring program to inform offshore wind related research over the coastal continental shelf of New Jersey
+references: Zooplankton of the Atlantic and Gulf Coasts 2nd ed 2012 https://doi.org/10.1353/book.19394 ; McClatchie et al., 2000, https://doi.org/10.1016/S0165-7836(00)00168-5 
 ## constant
 title: RMI Zooplankton Sampling for Glider Echosounder Ground-Truthing
 keywords: ''
@@ -16,7 +16,7 @@ license: see Data Use Agreement
 #standard_name_vocabulary: 
 creator_name: Rutgers Marine Ecosystem Data Team
 creator_email: ecosystemdata@marine.rutgers.edu
-#creator_url: 
+creator_url: https://rucool.marine.rutgers.edu/
 #creator_country:
 creator_institution: Rutgers University
 #creator_sector: 

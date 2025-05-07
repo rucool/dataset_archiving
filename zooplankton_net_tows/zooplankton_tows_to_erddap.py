@@ -40,8 +40,8 @@ def main(proj):
 
     # format dataset
     # format time, lon, lat, calculate tow duration
-    df['time'] = pd.to_datetime(df.date_utc + df.time_utc_start, format='%m/%d/%y%H:%M')
-    end_time = pd.to_datetime(df.date_utc + df.time_utc_end, format='%m/%d/%y%H:%M')
+    df['time'] = pd.to_datetime(df.date_utc + df.time_utc_start, format='%m/%d/%Y%H:%M')
+    end_time = pd.to_datetime(df.date_utc + df.time_utc_end, format='%m/%d/%Y%H:%M')
     diff = end_time - df['time']
     df['tow_duration'] = diff.dt.total_seconds() / 60  # convert to minutes
     df['latitude'] = convert_lat_lon(df.lat_degrees_start, df.lat_mins_start)
@@ -56,7 +56,7 @@ def main(proj):
     df.drop(drop_cols, axis=1, inplace=True)
     df = df.set_index('time')
     df = df.sort_index()
-    strcols = ['glider_trajectory', 'deployment_recovery', 'season', 'sample_notes', 'taxa', 'taxa_group']  # columns that are strings
+    strcols = ['glider_trajectory', 'acoustics_configuration', 'deployment_recovery', 'season', 'sample_notes', 'taxa', 'taxa_group']  # columns that are strings
     
     # fill nans in columns that aren't strings with -9999
     df[[col for col in df.columns if col not in strcols]] = df[[col for col in df.columns if col not in strcols]].fillna(-9999)
