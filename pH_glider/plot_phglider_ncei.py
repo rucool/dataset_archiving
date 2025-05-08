@@ -2,7 +2,7 @@
 
 """
 Author: Lori Garzio on 8/10/2021
-Last modified: 2/18/2025
+Last modified: 5/8/2025
 Quickly plot xsections of data variables that will be sent to the NCEI OA data portal
 (https://www.ncei.noaa.gov/access/ocean-carbon-acidification-data-system-portal/).
 Also plot the first 30 pH profiles to make sure the bad data (when the sensor was equilibrating) are removed.
