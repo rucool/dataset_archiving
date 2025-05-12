@@ -2,17 +2,18 @@
 
 """
 Author: Lori Garzio on 4/28/2021
-Last modified: 2/19/2025
+Last modified: 5/12/2025
 Process final pH glider dataset to upload to the NCEI OA data portal
 (https://www.ncei.noaa.gov/access/ocean-carbon-acidification-data-system-portal/)
 1. Apply QC
 2. Drop extra variables that we don't need to include in the archive
 3. Remove pH/TA/omega when depth_interpolated < 1 m (due to noise at surface)
-4. Fix some historically incorrect metadata (if necessary)
-5. Add additional metadata specific to pH datasets
-6. Export a lonlat.csv file required for NCEI data submission
-7. Save the final netCDF file
-8. Print variable and deployment information to a csv file to help with NCEI submission
+4. Optional: remove first 10 pH profiles (bad/suspect data when the sensor was equilibrating)
+5. Fix some historically incorrect metadata (if necessary)
+6. Add additional metadata specific to pH datasets
+7. Export a lonlat.csv file required for NCEI data submission
+8. Save the final netCDF file
+9. Print variable and deployment information to a csv file to help with NCEI submission
 """
 
 import os
@@ -32,12 +33,16 @@ def delete_attrs(da):
             continue
 
 
-def main(fname):
+def main(fname, rfp):
     savedir = os.path.join(os.path.dirname(fname), 'ncei_pH')
     os.makedirs(savedir, exist_ok=True)
 
     ds = xr.open_dataset(fname)
-    deploy = ds.attrs['deployment']
+    try:
+        deploy = ds.attrs['deployment']
+    except KeyError:
+        f = fname.split('/')[-1]
+        deploy = f'{f.split("-")[0]}-{f.split("-")[1]}'  # get the deployment from the filename
 
     # grab profile_id encoding
     pid_encoding = ds.profile_id.encoding
@@ -76,12 +81,22 @@ def main(fname):
     ds = ds.drop_vars(drop_vars)
 
     # there's a lot of noise in pH at the surface, so set pH/TA/omega values to nan when depth_interpolated < 1 m
-    add_comment = 'Values at depths < 1m were removed due to noise typically observed at the surface'
+    add_comment = 'Values at depths < 1m were removed due to noise typically observed at the surface.'
     oavars = ['pH', 'aragonite_saturation_state', 'total_alkalinity']
     idx = np.where(ds.depth_interpolated < 1)[0]
     for oav in oavars:
         ds[oav].values[idx] = np.nan
         ds[oav].attrs['comment'] = ' '.join((ds[oav].comment, add_comment))
+
+    # remove first n pH/TA/omega profiles (bad/suspect data when the sensor was equilibrating)
+    if np.logical_and(isinstance(rfp, int), rfp > 0):
+        add_comment = f'First {rfp} profiles removed due to bad/suspect data when the sensor was equilibrating.'
+        profiletimes = np.unique(ds.profile_time.values)
+        ptimes = profiletimes[0:rfp]
+        pidx = np.where(np.isin(ds.profile_time.values, ptimes))[0]
+        for oav in oavars:
+            ds[oav].values[pidx] = np.nan
+            ds[oav].attrs['comment'] = ' '.join((ds[oav].comment, add_comment))
 
     # add profile_id
     attributes = dict(
@@ -220,5 +235,6 @@ def main(fname):
     
 
 if __name__ == '__main__':
-    ncfile = '/Users/garzio/Documents/gliderdata/ru39-20240429T1522/ru39-20240429T1522-profile-sci-delayed.nc'
-    main(ncfile)
+    ncfile = '/Users/garzio/Documents/rucool/Saba/gliderdata/2023/ru34-20230920T1506/ru34-20230920T1506-profile-sci-delayed.nc'
+    remove_first_profiles = 10  # remove the first 10-12 pH profiles? # of profiles to remove or False
+    main(ncfile, remove_first_profiles)
