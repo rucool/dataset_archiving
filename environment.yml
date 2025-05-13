@@ -18,4 +18,3 @@ dependencies:
   - requests==2.32.3
   - wheel==0.45.1
   - pyco2sys==1.8.3.4
-  - seawater==3.3.5
