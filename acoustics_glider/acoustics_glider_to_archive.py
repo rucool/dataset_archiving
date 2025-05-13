@@ -2,10 +2,14 @@
 
 """
 Author: Lori Garzio on 2/19/2025
-Last modified: 3/18/2025
+Last modified: 5/13/2025
 Process final acoustics glider datasets to archive:
 AZFP to NCEI (https://www.ncei.noaa.gov/products/water-column-sonar-data)
 DMON to NCEI (https://www.ncei.noaa.gov/products/passive-acoustic-data)
+Note: if there is a pH sensor on the glider (likely AZFP glider), sometimes the first few pH profiles 
+are bad due to the sensor acclimating or bubbles that need to work themselves out. Need
+to first determine if this is the case (see pH_glider/plot_phglider_first_profiles.py).
+Then enter the number of pH profiles to remove from the dataset in the arguments to this script
 """
 
 import os
@@ -25,7 +29,7 @@ def delete_attrs(da):
             continue
 
 
-def main(fname, acoustics):
+def main(fname, acoustics, rfp):
     savedir = os.path.join(os.path.dirname(fname), f'ncei_{acoustics}')
     os.makedirs(savedir, exist_ok=True)
 
@@ -65,6 +69,16 @@ def main(fname, acoustics):
         for oav in oavars:
             ds[oav].values[idx] = np.nan
             ds[oav].attrs['comment'] = ' '.join((ds[oav].comment, add_comment))
+
+        # remove first n pH/TA/omega profiles (bad/suspect data when the sensor was equilibrating)
+        if np.logical_and(isinstance(rfp, int), rfp > 0):
+            add_comment = f'First {rfp} profiles removed due to bad/suspect data when the sensor was equilibrating.'
+            profiletimes = np.unique(ds.profile_time.values)
+            ptimes = profiletimes[0:rfp]
+            pidx = np.where(np.isin(ds.profile_time.values, ptimes))[0]
+            for oav in oavars:
+                ds[oav].values[pidx] = np.nan
+                ds[oav].attrs['comment'] = ' '.join((ds[oav].comment, add_comment))
     except KeyError:
         pass
 
@@ -202,6 +216,7 @@ def main(fname, acoustics):
     
 
 if __name__ == '__main__':
-    ncfile = '/Users/garzio/Documents/gliderdata/ru40-20230817T1522/ru40-20230817T1522-profile-sci-delayed.nc'
+    ncfile = '/Users/garzio/Documents/gliderdata/ru40-20241021T1654/ru40-20241021T1654-profile-sci-delayed.nc'
     acoustics = 'dmon'  # 'azfp' or 'dmon'
-    main(ncfile, acoustics)
+    remove_first_profiles = False  # remove the first 10-12 pH profiles? # of profiles to remove or False
+    main(ncfile, acoustics, remove_first_profiles)
