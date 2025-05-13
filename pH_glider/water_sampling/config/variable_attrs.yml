@@ -18,6 +18,10 @@ niskin:
     attrs:
         description: Niskin bottle number
     decimal: 0
+collection_method:
+    attrs:
+        description: Method by which the water samples were collected (e.g., Niskin, CTD Rosette, bucket)
+        long_name: Collection Method
 depth:
     attrs:
         long_name: Depth
