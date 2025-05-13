@@ -22,7 +22,7 @@ pH glider datasets are QC'd and archived in NCEI's [Ocean Carbon and Acidificati
 
 4. [plot_phglider_ncei.py](https://github.com/rucool/dataset_archiving/blob/master/pH_glider/plot_phglider_ncei.py): make quick plots of the glider data variables for a quick check before archiving.
 
-5. [compare_phglider_discrete.py](https://github.com/rucool/dataset_archiving/blob/master/pH_glider/compare_phglider_discrete.py): Compare pH glider data to the carbonate chemistry discrete water sampling done at deployment and recovery. Data can be found in [ERDDAP](https://rucool-sampling.marine.rutgers.edu/erddap/tabledap/pH_glider_carb_chem_water_sampling.html).
+5. [compare_phglider_discrete.py](https://github.com/rucool/dataset_archiving/blob/master/pH_glider/compare_phglider_discrete.py): Compare pH glider data to the carbonate chemistry discrete water sampling done at deployment and recovery. Water sampling data can be found in [ERDDAP](https://rucool-sampling.marine.rutgers.edu/erddap/tabledap/pH_glider_carb_chem_water_sampling.html).
     1. The discrete water sampling data are measured at 25C, so first correct pH for temperature, pressure and salinity
     2. Grab the first(last) 10 glider profiles at the beginning(end) of the deployment
     3. Calculate the time and distance between the glider and discrete water sample
