@@ -2,7 +2,7 @@
 
 """
 Author: Lori Garzio on 8/10/2021
-Last modified: 5/8/2025
+Last modified: 5/23/2025
 Quickly plot xsections of data variables that will be sent to the NCEI OA data portal
 (https://www.ncei.noaa.gov/access/ocean-carbon-acidification-data-system-portal/).
 Also plot the first 30 pH profiles to make sure the bad data (when the sensor was equilibrating) are removed.
@@ -15,6 +15,8 @@ import pandas as pd
 import yaml
 import cmocean as cmo
 import matplotlib.pyplot as plt
+import cool_maps.plot as cplt
+import cartopy.crs as ccrs
 import dataset_archiving.common as cf
 import dataset_archiving.plotting as pf
 plt.rcParams.update({'font.size': 13})
@@ -35,6 +37,31 @@ def main(fname):
     t0str = pd.to_datetime(np.nanmin(ds.time)).strftime('%Y-%m-%dT%H:%M')
     t1str = pd.to_datetime(np.nanmax(ds.time)).strftime('%Y-%m-%dT%H:%M')
 
+    # make a map of the glider track
+    # define the map extent
+    df = pd.DataFrame({'lon': ds.profile_lon.values, 'lat': ds.profile_lat.values})
+    df = df.drop_duplicates()
+    extent = [np.nanmin(df.lon) - 1.5, np.nanmax(df.lon) + 1.5,
+              np.nanmin(df.lat) - 1, np.nanmax(df.lat) + 1]
+    
+    kwargs = dict()
+    kwargs['coast'] = 'full'
+    kwargs['oceancolor'] = 'none'
+    kwargs['decimal_degrees'] = True
+    kwargs['bathymetry'] = True
+    #kwargs['bathymetry_file'] = '/Users/garzio/Documents/rucool/bathymetry/GEBCO_2014_2D_-100.0_0.0_-10.0_50.0.nc'
+    kwargs['bathymetry_method'] = 'topo_log'
+    fig, ax = cplt.create(extent, **kwargs)
+
+    ax.scatter(df.lon, df.lat, color='magenta', marker='.', s=20, transform=ccrs.PlateCarree(), zorder=10)
+    
+    plt.title(f'{deploy}')
+    sfilename = f'{deploy}_glider_track.png'
+    sfile = os.path.join(savedir, sfilename)
+    plt.savefig(sfile, dpi=200)
+    plt.close()
+    
+    # plot each variable
     root_dir = os.path.dirname(os.path.abspath(__file__))
     parent_dir = os.path.dirname(root_dir)
     configdir = os.path.join(parent_dir, 'configs')
@@ -68,7 +95,7 @@ def main(fname):
             plt.close()
 
             # plot first 30 pH profiles
-            if pv == 'pH':
+            if pv == 'pH':  # pH pH_corrected
                 n = 30
                 profiletimes = np.unique(ds.profile_time.values)
                 ptimes = profiletimes[0:n]
