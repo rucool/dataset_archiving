@@ -2,7 +2,7 @@
 
 """
 Author: Lori Garzio on 5/9/2025
-Last modified: 5/13/2025
+Last modified: 5/23/2025
 Compare glider data to discrete water samples collected during glider deployment/recovery
 1. The water sampling pH is measured at 25C, so first correct pH for temperature, pressure and salinity
 2. Grab the first(last) 10 glider profiles at the beginning(end) of the deployment
@@ -41,15 +41,15 @@ def haversine(lat1, lon1, lat2, lon2):
     return c * r
 
 
-def main(fname):
+def main(fname, proj):
     save_dir = os.path.join(os.path.dirname(fname), 'compare_glider_discrete')
     os.makedirs(save_dir, exist_ok=True)
 
     summary_headers = ['deployment_recovery', 'glider_date', 'discrete_date', 'collection_method', 'glider_n', 'discrete_n', 'time_difference_minutes',
                        'glider_depth_m', 'discrete_depth_m', 'glider_lon', 'glider_lat',
-                       'discrete_lon', 'discrete_lat', 'distance_m', 'glider_ph', 'discrete_ph', 'diff_ph',
-                       'glider_ta', 'discrete_ta', 'diff_ta', 'glider_temp', 'discrete_temp', 'glider_sal',
-                       'discrete_sal']
+                       'discrete_lon', 'discrete_lat', 'distance_m', 'glider_ph', 'glider_ph_std', 'discrete_ph', 'discrete_ph_std', 'diff_ph',
+                       'glider_ta', 'glider_ta_std', 'discrete_ta', 'discrete_ta_std', 'diff_ta', 'glider_temp', 'glider_temp_std', 'discrete_temp', 
+                       'discrete_temp_std', 'glider_sal', 'glider_sal_std', 'discrete_sal', 'discrete_sal_std']
     summary_rows = []
 
     # grab water sampling dataset from ERDDAP
@@ -187,18 +187,23 @@ def main(fname):
 
         # write summary file
         df_dr.loc[df_dr['depth'] <= 2, 'depth'] = 2  # set depth to 2 m for shallow samples
-        discrete_depth_unique = np.unique(df_dr.depth)
-        for ddu in discrete_depth_unique:
-            sdf = df_dr.loc[df_dr['depth'] == ddu]
-            coll_method = np.unique(df_dr.collection_method).tolist()
-            discrete_n = len(sdf)
-            if ddu <= 4:
-                gl_depth_idx = np.where(dss.depth_interpolated <= 4)[0]
+
+        # round discrete depth up to the nearest multiple of 2
+        df_dr['depth_ceil'] = np.ceil(df_dr['depth'] / 2) * 2
+
+        for depth_bin, group in df_dr.groupby('depth_ceil'):
+            discrete_n = len(group)
+            if discrete_n == 0:
+                continue
+            coll_method = np.unique(group.collection_method).tolist()
+            discrete_depth = np.nanmedian(group.depth)
+            if discrete_depth < 4:
+                gl_depth_idx = np.where(dss.depth_interpolated < 4)[0]
             else:
-                depth1 = ddu - 1
-                depth2 = ddu + 1
+                depth1 = discrete_depth - 1
+                depth2 = discrete_depth + 1
                 gl_depth_idx = np.where(np.logical_and(dss.depth_interpolated > depth1,
-                                                        dss.depth_interpolated < depth2))[0]
+                                                       dss.depth_interpolated < depth2))[0]
             try:
                 gl_depth = int(np.round(np.nanmedian(dss.depth_interpolated[gl_depth_idx])))
             except ValueError:
@@ -206,33 +211,51 @@ def main(fname):
                 gl_depth = np.nan
 
             glider_n = int(np.sum(~np.isnan(dss.pH[gl_depth_idx])))
-            discrete_ph = np.round(np.nanmedian(sdf.pH_corrected), 3)
+            discrete_ph = np.round(np.nanmedian(group.pH_corrected), 3)
+            dph_std = np.round(np.nanstd(group.pH_corrected), 3)
             #glider_ph = np.round(np.nanmedian(dss.ph_total_shifted[gl_depth_idx]), 3)
             glider_ph = np.round(np.nanmedian(dss.pH[gl_depth_idx]), 3)
+            gph_std = np.round(np.nanstd(dss.pH[gl_depth_idx]), 3)
             ph_diff = np.round(glider_ph - discrete_ph, 3)
-            discrete_ta = int(np.round(np.nanmedian(sdf.TA)))
+            discrete_ta = int(np.round(np.nanmedian(group.TA)))
+            dta_std = int(np.round(np.nanstd(group.TA)))
             try:
                 glider_ta = int(np.round(np.nanmedian(dss.total_alkalinity[gl_depth_idx])))
+                gta_std = int(np.round(np.nanstd(dss.total_alkalinity[gl_depth_idx])))
             except ValueError:
                 print('glider_ta = NaN')
                 glider_ta = np.nan
+                gta_std = np.nan
             ta_diff = np.round(glider_ta - discrete_ta, 3)
-            discrete_temp = np.round(np.nanmedian(sdf.temperature), 1)
+            discrete_temp = np.round(np.nanmedian(group.temperature), 1)
+            dtemp_std = np.round(np.nanstd(group.temperature), 1)
             glider_temp = np.round(np.nanmedian(dss.temperature[gl_depth_idx]), 1)
-            discrete_sal = np.round(np.nanmedian(sdf.salinity), 2)
+            gtemp_std = np.round(np.nanstd(dss.temperature[gl_depth_idx]), 1)
+            discrete_sal = np.round(np.nanmedian(group.salinity), 2)
+            dsal_std = np.round(np.nanstd(group.salinity), 2)
             glider_sal = np.round(np.nanmedian(dss.salinity[gl_depth_idx]), 2)
+            gsal_std = np.round(np.nanstd(dss.salinity[gl_depth_idx]), 2)
 
-            summary_data = [dr, dss_t0str, sample_time, coll_method, glider_n, discrete_n, diff_mins, gl_depth, int(np.round(ddu)), 
-                            glon, glat, slon, slat, distance_meters, glider_ph, discrete_ph, ph_diff, 
-                            glider_ta, discrete_ta, ta_diff, glider_temp, discrete_temp, glider_sal, discrete_sal]
+            summary_data = [dr, dss_t0str, sample_time, coll_method, glider_n, discrete_n, diff_mins, gl_depth, discrete_depth, 
+                            glon, glat, slon, slat, distance_meters, glider_ph, gph_std, discrete_ph, dph_std, ph_diff, 
+                            glider_ta, gta_std, discrete_ta, dta_std, ta_diff, glider_temp, gtemp_std, discrete_temp, dtemp_std, 
+                            glider_sal, gsal_std, discrete_sal, dsal_std]
 
             summary_rows.append(summary_data)
 
     summary_df = pd.DataFrame(summary_rows, columns=summary_headers)
     summary_df.sort_values(by=['discrete_date', 'discrete_depth_m'], inplace=True)
-    summary_df.to_csv(os.path.join(save_dir, f'{deploy}_compare_glider_discrete.csv'), index=False)
+
+    # save the summary file to the local directory with the plots
+    summary_df.to_csv(os.path.join(save_dir, f'{deploy}_groundtruthing_table.csv'), index=False)
+
+    # also save the summary file to a common location for each project to combine and share via ERDDAP
+    currentdir = os.path.dirname(os.path.abspath(__file__))
+    sfile = os.path.join(currentdir, 'groundtruthing_tables', proj, f'{deploy}_groundtruthing_table.csv')
+    summary_df.to_csv(sfile, index=False)
 
 
 if __name__ == '__main__':
-    ncfile = '/Users/garzio/Documents/rucool/Saba/gliderdata/2023/ru34-20230920T1506/ncei_pH/ru34-20230920T1506-delayed.nc'
-    main(ncfile)
+    ncfile = '/Users/garzio/Documents/rucool/Saba/gliderdata/2023/ru39-20231018T1426/ncei_pH/ru39-20231018T1426-delayed.nc'
+    project = 'RMI'
+    main(ncfile, project)
