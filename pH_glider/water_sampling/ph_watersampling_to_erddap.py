@@ -2,10 +2,11 @@
 
 """
 Author: Lori Garzio on 1/22/2025
-Last modified: 5/13/2025
+Last modified: 5/30/2025
 Format pH glider water sampling tables to netcdf for sharing in ERDDAP.
 Combine the pH, TA, and DIC values onto one row of data per sample (two sample bottles are required 
 for the analysis so the data are recorded on two separate lines for the same sample.) 
+Calculate pH corrected for in-situ temperature, pressure, and salinity using PyCO2SYS.
 Exports a .csv file of the merged dataset to manually check, and a formatted NetCDF file for sharing via ERDDAP.
 Raw files are located in the water_sampling directory and are derived from the water sampling logs.
 """
@@ -15,8 +16,9 @@ import glob
 import numpy as np
 import pandas as pd
 import yaml
-import xarray as xr
 import os
+import gsw
+import PyCO2SYS as pyco2
 pd.set_option('display.width', 320, "display.max_columns", 15)  # for display in pycharm console
 
 
@@ -96,6 +98,35 @@ def main():
                    'DIC_avg': 'DIC',}
     merged.rename(columns=rename_cols, inplace=True)
 
+    # calculate pressure from depth
+    # depth is negative for oceanographic convention
+    merged['pressure_dbar'] = abs(gsw.p_from_z(-merged['depth'], merged['latitude']))
+
+    # calculate pH corrected for temperature pressure salinity
+    # pyCO2SYS needs two parameters to calculate pH corrected, so if AverageTA isn't available, fill with 2200
+    merged['TA'] = merged['TA'].fillna(2200)
+    par1 = merged['pH']
+    par1_type = 3  # parameter type (pH)
+    par2 = merged['TA']
+    par2_type = 1
+
+    kwargs = dict(salinity=merged['salinity'],
+                  temperature=25,
+                  temperature_out=merged['temperature'],
+                  pressure=0,
+                  pressure_out=merged['pressure_dbar'],
+                  opt_pH_scale=1,
+                  opt_k_carbonic=4,
+                  opt_k_bisulfate=1,
+                  opt_total_borate=1,
+                  opt_k_fluoride=2)
+
+    results = pyco2.sys(par1, par2, par1_type, par2_type, **kwargs)
+    merged['pH_corrected'] = results['pH_out']
+
+    # drop pressure after calculating corrected pH
+    merged.drop(columns=['pressure_dbar'], inplace=True)
+    
     # check the merged dataframe
     tnow = dt.datetime.now(dt.UTC).strftime('%Y%m%d')
     merged.to_csv(os.path.join(wsdir, 'output', 'csv', f'{tnow}_merged_dataframe_to_check.csv'))

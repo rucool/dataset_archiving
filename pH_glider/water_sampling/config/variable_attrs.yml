@@ -67,7 +67,7 @@ pH:
         units: '1'
         long_name: pH
         standard_name: sea_water_ph_reported_on_total_scale
-        description: Average pH (on the Total pH scale) measured at 25°C from the water samples.
+        description: Average pH (on the Total pH scale) measured at 25°C from the water samples. These values have not been corrected for in-situ temperature, pressure or salinity.
     decimal: 4
 pH_stdev:
     attrs:
@@ -99,4 +99,10 @@ DIC_stdev:
         long_name: DIC Standard Deviation
         description: Standard deviation of DIC
     decimal: 1
-
+pH_corrected:
+    attrs:
+        units: '1'
+        long_name: pH
+        standard_name: sea_water_ph_reported_on_total_scale
+        description: Average pH (on the Total pH scale) measured from the water samples that have been corrected for in-situ temperature, pressure and salinity using the PyCO2SYS python package.
+    decimal: 4
