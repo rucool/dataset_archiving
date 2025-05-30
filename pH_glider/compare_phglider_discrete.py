@@ -2,16 +2,15 @@
 
 """
 Author: Lori Garzio on 5/9/2025
-Last modified: 5/23/2025
+Last modified: 5/30/2025
 Compare glider data to discrete water samples collected during glider deployment/recovery
-1. The water sampling pH is measured at 25C, so first correct pH for temperature, pressure and salinity
-2. Grab the first(last) 10 glider profiles at the beginning(end) of the deployment
-3. Calculate the time and distance between the glider and discrete water sample
-4. Plot the glider profiles and discrete water samples
-5. Calculate the differences between the water samples and glider data. For surface water samples
+1. Grab the first(last) 10 glider profiles at the beginning(end) of the deployment
+2. Calculate the time and distance between the glider and discrete water sample
+3. Plot the glider profiles and discrete water samples
+4. Calculate the differences between the water samples and glider data. For surface water samples
 (e.g. depth < 4 m), compare to the median of the glider data from 0-4m. For water samples >4 m depth,
 compare to the median of the glider data from the water sample depth +/- 1 m.
-6. Save the plots and summary data to a csv file
+5. Save the plots and summary data to a csv file
 """
 
 import numpy as np
@@ -66,38 +65,14 @@ def main(fname, proj):
     # drop rows without pH
     df = df.dropna(axis=0, how='all', subset=['pH'])
 
-    # calculate pressure from depth
-    # depth is negative for oceanographic convention
-    df['pressure_dbar'] = abs(gsw.p_from_z(-df['depth'], df['latitude']))
-
-    # calculate pH corrected for temperature pressure salinity
-    # pyCO2SYS needs two parameters to calculate pH corrected, so if AverageTA isn't available, fill with 2200
-    df['TA'] = df['TA'].fillna(2200)
-    par1 = df['pH']
-    par1_type = 3  # parameter type (pH)
-    par2 = df['TA']
-    par2_type = 1
-
-    kwargs = dict(salinity=df['salinity'],
-                  temperature=25,
-                  temperature_out=df['temperature'],
-                  pressure=0,
-                  pressure_out=df['pressure_dbar'],
-                  opt_pH_scale=1,
-                  opt_k_carbonic=4,
-                  opt_k_bisulfate=1,
-                  opt_total_borate=1,
-                  opt_k_fluoride=2)
-
-    results = pyco2.sys(par1, par2, par1_type, par2_type, **kwargs)
-    df['pH_corrected'] = results['pH_out']
-
     ds = xr.open_dataset(fname)
     ds = ds.swap_dims({'time': 'profile_time'})
     ds = ds.sortby(ds.profile_time)
     filename = fname.split('/')[-1]
     deploy = f'{filename.split("-")[0]}-{filename.split("-")[1]}'
-    df2 = df.loc[df['glider_trajectory'] == deploy]
+
+    # subset the dataframe for the glider deployment (some rows are associated with multiple glider deployments)
+    df2 = df.loc[df['glider_trajectory'].str.contains(deploy, na=False)]
 
     plt_vars = ['chlorophyll_a', 'pH', 'salinity', 'temperature', 'total_alkalinity']
     for dr in np.unique(df2['deployment_recovery']):
