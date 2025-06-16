@@ -1,21 +1,21 @@
-﻿project,station_id,glider_trajectory,deployment_recovery,date_utc,time_utc,lat_degrees,lat_mins,lon_degrees,lon_mins,sample,cast,niskin,collection_method,bottle_size_ml,sample_notes,depth_m,temperature_degrees_c,salinity,pH_avg_25degC,pH_stdev,TA_avg,TA_stdev,DIC_avg,DIC_stdev,analysis_notes
-RMI,RU39 RMI 2025 Winter Deployment,ru39-20250226T1700,deployment,2/26/25,18:26,40,14.265,-73,51.631,RMI-RU-225,1,1,single_niskin,500,surface,2,3.7692,31.6543,7.934,0.0007,2206.3,1,1998.1,1,
-RMI,RU39 RMI 2025 Winter Deployment,ru39-20250226T1700,deployment,2/26/25,18:26,40,14.265,-73,51.631,RMI-RU-226,1,1,single_niskin,500,surface,2,3.7692,31.6543,,,,,,,sample lost in shipment
-RMI,RU39 RMI 2025 Winter Deployment,ru39-20250226T1700,deployment,2/26/25,18:31,40,14.239,-73,51.574,RMI-RU-227,2,1,single_niskin,500,surface,2,3.7692,31.6543,7.936,0.0007,2206.7,1,1994.8,1,
-RMI,RU39 RMI 2025 Winter Deployment,ru39-20250226T1700,deployment,2/26/25,18:31,40,14.239,-73,51.574,RMI-RU-228,2,1,single_niskin,500,surface,2,3.7692,31.6543,,,,,,,sample lost in shipment
-RMI,RU39 RMI 2025 Winter Deployment,ru39-20250226T1700,deployment,2/26/25,18:34,40,14.224,-73,51.536,RMI-RU-229,3,1,single_niskin,500,near bottom,15,4.9285,33.3152,,,2247.6,1,2070.4,1,
-RMI,RU39 RMI 2025 Winter Deployment,ru39-20250226T1700,deployment,2/26/25,18:34,40,14.224,-73,51.536,RMI-RU-230,3,1,single_niskin,500,near bottom,15,4.9285,33.3152,7.843,0.0007,,,,,
-RMI,RU39 RMI 2025 Winter Deployment,ru39-20250226T1700,deployment,2/26/25,18:41,40,14.213,-73,51.498,RMI-RU-231,4,1,single_niskin,500,near bottom,15,4.9285,33.3152,,,,,,,sample lost in shipment
-RMI,RU39 RMI 2025 Winter Deployment,ru39-20250226T1700,deployment,2/26/25,18:41,40,14.213,-73,51.498,RMI-RU-232,4,1,single_niskin,500,near bottom,15,4.9285,33.3152,,,,,,,sample lost in shipment
-RMI,RU39 RMI 2025 Winter Deployment,ru39-20250226T1700,deployment,2/26/25,18:50,40,14.212,-73,51.454,RMI-RU-233,5,1,single_niskin,500,thermocline,8,4.2349,33.0327,7.9,0.0007,2217.7,1,2020.7,1,
-RMI,RU39 RMI 2025 Winter Deployment,ru39-20250226T1700,deployment,2/26/25,18:50,40,14.212,-73,51.454,RMI-RU-234,5,1,single_niskin,500,thermocline,8,4.2349,33.0327,,,,,,,sample lost in shipment
-RMI,RU39 RMI 2025 Winter Deployment,ru39-20250226T1700,deployment,2/26/25,18:55,40,14.22,-73,51.419,RMI-RU-235,6,1,single_niskin,500,thermocline,8,4.2349,33.0327,7.901,0.0007,2216.7,1,2016.9,1,
-RMI,RU39 RMI 2025 Winter Deployment,ru39-20250226T1700,deployment,2/26/25,18:55,40,14.22,-73,51.419,RMI-RU-236,6,1,single_niskin,500,thermocline,8,4.2349,33.0327,,,,,,,sample lost in shipment
-RMI,RU39 RMI 2025 Winter Recovery,ru39-20250226T1700,recovery,3/28/25,15:45,37,27.625,-74,12.209,RMI-RU-237,1,1,single_niskin,500,,2,,,,,,,,,
-RMI,RU39 RMI 2025 Winter Recovery,ru39-20250226T1700,recovery,3/28/25,15:45,37,27.625,-74,12.209,RMI-RU-238,1,1,single_niskin,500,,2,,,,,,,,,
-RMI,RU39 RMI 2025 Winter Recovery,ru39-20250226T1700,recovery,3/28/25,15:51,37,27.625,-74,12.209,RMI-RU-239,2,1,single_niskin,500,,2,,,,,,,,,
-RMI,RU39 RMI 2025 Winter Recovery,ru39-20250226T1700,recovery,3/28/25,15:51,37,27.625,-74,12.209,RMI-RU-240,2,1,single_niskin,500,,2,,,,,,,,,
-RMI,RU39 RMI 2025 Winter Recovery,ru39-20250226T1700,recovery,3/28/25,15:56,37,27.651,-74,12.169,RMI-RU-241,3,1,single_niskin,500,,10,,,,,,,,,
-RMI,RU39 RMI 2025 Winter Recovery,ru39-20250226T1700,recovery,3/28/25,15:56,37,27.651,-74,12.169,RMI-RU-242,3,1,single_niskin,500,,10,,,,,,,,,
-RMI,RU39 RMI 2025 Winter Recovery,ru39-20250226T1700,recovery,3/28/25,16:04,37,27.685,-74,12.106,RMI-RU-243,4,1,single_niskin,500,,10,,,,,,,,,
-RMI,RU39 RMI 2025 Winter Recovery,ru39-20250226T1700,recovery,3/28/25,16:04,37,27.685,-74,12.106,RMI-RU-244,4,1,single_niskin,500,,10,,,,,,,,,
+﻿project,station_id,glider_trajectory,deployment_recovery,date_utc,time_utc,lat_degrees,lat_mins,lon_degrees,lon_mins,sample,cast,niskin,collection_method,bottle_size_ml,sample_notes,depth_m,temperature_degrees_c,salinity,pH_avg_25degC,pH_stdev,TA_avg,TA_stdev,DIC_avg,DIC_stdev,pH_from_DIC_TA_total_25C,pH_diff_measured_minus_calculated,pH_flag,analysis_notes
+RMI,RU39 RMI 2025 Winter Deployment,ru39-20250226T1700,deployment,2/26/25,18:26,40,14.265,-73,51.631,RMI-RU-225,1,1,single_niskin,500,surface,2,3.7692,31.6543,7.934,0.0007,2206.3,1,1998.1,1,7.928842899,0.005075583,1,
+RMI,RU39 RMI 2025 Winter Deployment,ru39-20250226T1700,deployment,2/26/25,18:26,40,14.265,-73,51.631,RMI-RU-226,1,1,single_niskin,500,surface,2,3.7692,31.6543,,,,,,,,,,sample lost in shipment
+RMI,RU39 RMI 2025 Winter Deployment,ru39-20250226T1700,deployment,2/26/25,18:31,40,14.239,-73,51.574,RMI-RU-227,2,1,single_niskin,500,surface,2,3.7692,31.6543,7.936,0.0007,2206.7,1,1994.8,1,7.936722294,-0.001141009,1,
+RMI,RU39 RMI 2025 Winter Deployment,ru39-20250226T1700,deployment,2/26/25,18:31,40,14.239,-73,51.574,RMI-RU-228,2,1,single_niskin,500,surface,2,3.7692,31.6543,,,,,,,,,,sample lost in shipment
+RMI,RU39 RMI 2025 Winter Deployment,ru39-20250226T1700,deployment,2/26/25,18:34,40,14.224,-73,51.536,RMI-RU-229,3,1,single_niskin,500,near bottom,15,4.9285,33.3152,,,2247.6,1,2070.4,1,7.834345791,0.008525388,1,
+RMI,RU39 RMI 2025 Winter Deployment,ru39-20250226T1700,deployment,2/26/25,18:34,40,14.224,-73,51.536,RMI-RU-230,3,1,single_niskin,500,near bottom,15,4.9285,33.3152,7.843,0.0007,,,,,,,,
+RMI,RU39 RMI 2025 Winter Deployment,ru39-20250226T1700,deployment,2/26/25,18:41,40,14.213,-73,51.498,RMI-RU-231,4,1,single_niskin,500,near bottom,15,4.9285,33.3152,,,,,,,,,,sample lost in shipment
+RMI,RU39 RMI 2025 Winter Deployment,ru39-20250226T1700,deployment,2/26/25,18:41,40,14.213,-73,51.498,RMI-RU-232,4,1,single_niskin,500,near bottom,15,4.9285,33.3152,,,,,,,,,,sample lost in shipment
+RMI,RU39 RMI 2025 Winter Deployment,ru39-20250226T1700,deployment,2/26/25,18:50,40,14.212,-73,51.454,RMI-RU-233,5,1,single_niskin,500,thermocline,8,4.2349,33.0327,7.9,0.0007,2217.7,1,2020.7,1,7.885634733,0.014219278,1,
+RMI,RU39 RMI 2025 Winter Deployment,ru39-20250226T1700,deployment,2/26/25,18:50,40,14.212,-73,51.454,RMI-RU-234,5,1,single_niskin,500,thermocline,8,4.2349,33.0327,,,,,,,,,,sample lost in shipment
+RMI,RU39 RMI 2025 Winter Deployment,ru39-20250226T1700,deployment,2/26/25,18:55,40,14.22,-73,51.419,RMI-RU-235,6,1,single_niskin,500,thermocline,8,4.2349,33.0327,7.901,0.0007,2216.7,1,2016.9,1,7.891879957,0.009434727,1,
+RMI,RU39 RMI 2025 Winter Deployment,ru39-20250226T1700,deployment,2/26/25,18:55,40,14.22,-73,51.419,RMI-RU-236,6,1,single_niskin,500,thermocline,8,4.2349,33.0327,,,,,,,,,,sample lost in shipment
+RMI,RU39 RMI 2025 Winter Recovery,ru39-20250226T1700,recovery,3/28/25,15:45,37,27.625,-74,12.209,RMI-RU-237,1,1,single_niskin,500,,2,,,,,,,,,,,,
+RMI,RU39 RMI 2025 Winter Recovery,ru39-20250226T1700,recovery,3/28/25,15:45,37,27.625,-74,12.209,RMI-RU-238,1,1,single_niskin,500,,2,,,,,,,,,,,,
+RMI,RU39 RMI 2025 Winter Recovery,ru39-20250226T1700,recovery,3/28/25,15:51,37,27.625,-74,12.209,RMI-RU-239,2,1,single_niskin,500,,2,,,,,,,,,,,,
+RMI,RU39 RMI 2025 Winter Recovery,ru39-20250226T1700,recovery,3/28/25,15:51,37,27.625,-74,12.209,RMI-RU-240,2,1,single_niskin,500,,2,,,,,,,,,,,,
+RMI,RU39 RMI 2025 Winter Recovery,ru39-20250226T1700,recovery,3/28/25,15:56,37,27.651,-74,12.169,RMI-RU-241,3,1,single_niskin,500,,10,,,,,,,,,,,,
+RMI,RU39 RMI 2025 Winter Recovery,ru39-20250226T1700,recovery,3/28/25,15:56,37,27.651,-74,12.169,RMI-RU-242,3,1,single_niskin,500,,10,,,,,,,,,,,,
+RMI,RU39 RMI 2025 Winter Recovery,ru39-20250226T1700,recovery,3/28/25,16:04,37,27.685,-74,12.106,RMI-RU-243,4,1,single_niskin,500,,10,,,,,,,,,,,,
+RMI,RU39 RMI 2025 Winter Recovery,ru39-20250226T1700,recovery,3/28/25,16:04,37,27.685,-74,12.106,RMI-RU-244,4,1,single_niskin,500,,10,,,,,,,,,,,,

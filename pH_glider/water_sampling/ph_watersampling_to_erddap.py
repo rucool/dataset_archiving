@@ -2,7 +2,7 @@
 
 """
 Author: Lori Garzio on 1/22/2025
-Last modified: 5/30/2025
+Last modified: 6/16/2025
 Format pH glider water sampling tables to netcdf for sharing in ERDDAP.
 Combine the pH, TA, and DIC values onto one row of data per sample (two sample bottles are required 
 for the analysis so the data are recorded on two separate lines for the same sample.) 
@@ -63,13 +63,13 @@ def main():
 
     # drop columns
     drop_cols = ['date_utc', 'time_utc', 'lat_degrees', 'lat_mins', 'lon_degrees', 'lon_mins', 'sample',
-                 'bottle_size_ml', 'sample_notes', 'analysis_notes']
+                 'bottle_size_ml', 'sample_notes', 'pH_diff_measured_minus_calculated', 'analysis_notes']
     df.drop(drop_cols, axis=1, inplace=True)
 
     # put data collected at the same depth/cast/sample bottle on the same row:
     # split dataframe into 3, drop nans, then merge back together
-    ph_dropcols = ['TA_avg', 'TA_stdev', 'DIC_avg', 'DIC_stdev']
-    ta_dropcols = ['pH_avg_25degC', 'pH_stdev', 'DIC_avg', 'DIC_stdev']
+    ph_dropcols = ['TA_avg', 'TA_stdev', 'DIC_avg', 'DIC_stdev', 'pH_from_DIC_TA_total_25C', 'pH_flag']
+    ta_dropcols = ['pH_avg_25degC', 'pH_stdev', 'DIC_avg', 'DIC_stdev', 'pH_from_DIC_TA_total_25C', 'pH_flag']
     dic_dropcols = ['pH_avg_25degC', 'pH_stdev', 'TA_avg', 'TA_stdev']
     df1 = df.drop(ph_dropcols, axis=1)
     df2 = df.drop(ta_dropcols, axis=1)
@@ -95,7 +95,7 @@ def main():
     # rename some columns
     rename_cols = {'depth_m': 'depth', 'temperature_degrees_c': 'temperature',
                    'pH_avg_25degC': 'pH', 'TA_avg': 'TA', 
-                   'DIC_avg': 'DIC',}
+                   'DIC_avg': 'DIC', 'pH_from_DIC_TA_total_25C': 'pH_calculated'}
     merged.rename(columns=rename_cols, inplace=True)
 
     # calculate pressure from depth

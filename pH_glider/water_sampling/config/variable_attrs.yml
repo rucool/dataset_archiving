@@ -106,3 +106,17 @@ pH_corrected:
         standard_name: sea_water_ph_reported_on_total_scale
         description: Average pH (on the Total pH scale) measured from the water samples that have been corrected for in-situ temperature, pressure and salinity using the PyCO2SYS python package.
     decimal: 4
+pH_calculated:
+    attrs:
+        units: '1'
+        long_name: pH Calculated
+        standard_name: sea_water_ph_reported_on_total_scale
+        description: pH (on the Total pH scale) calculated from TA and DIC measured from the water samples. This value is used to QC the measured pH.
+    decimal: 4
+pH_flag:
+    attrs:
+        long_name: pH Flag
+        description: Quality flag for pH. Values are suspect when the absolute difference between pH measured and calculated is greater than 0.04
+        flag_meanings: GOOD NOT_EVALUATED SUSPECT FAIL MISSING
+        flag_values: [1, 2, 3, 4, 9]
+    decimal: 0
