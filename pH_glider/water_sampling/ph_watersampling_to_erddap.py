@@ -2,7 +2,7 @@
 
 """
 Author: Lori Garzio on 1/22/2025
-Last modified: 6/16/2025
+Last modified: 6/23/2025
 Format pH glider water sampling tables to netcdf for sharing in ERDDAP.
 Combine the pH, TA, and DIC values onto one row of data per sample (two sample bottles are required 
 for the analysis so the data are recorded on two separate lines for the same sample.) 
@@ -126,6 +126,9 @@ def main():
 
     # drop pressure after calculating corrected pH
     merged.drop(columns=['pressure_dbar'], inplace=True)
+
+    # round depth up to the nearest whole number
+    merged['depth'] = np.ceil(merged['depth']).astype(int)
     
     # check the merged dataframe
     tnow = dt.datetime.now(dt.UTC).strftime('%Y%m%d')
@@ -150,7 +153,7 @@ def main():
     for k in ds.data_vars:
         if k in ['project', 'station_id', 'glider_trajectory', 'deployment_recovery', 'collection_method']:
             encoding[k] = dict(zlib=False, dtype=object, _FillValue=None)
-        elif k in ['cast', 'niskin', 'depth']:
+        elif k in ['cast', 'niskin', 'depth', 'pH_flag']:
             encoding[k] = dict(zlib=True, dtype=np.int32, _FillValue=np.int32(-9999))
         else:
             encoding[k] = dict(zlib=True, dtype=np.float32, _FillValue=np.float32(-9999.0))
