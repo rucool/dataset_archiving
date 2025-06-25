@@ -2,15 +2,23 @@
 
 """
 Author: Lori Garzio on 5/9/2025
-Last modified: 5/30/2025
+Last modified: 6/25/2025
 Compare glider data to discrete water samples collected during glider deployment/recovery
 1. Grab the first(last) 10 glider profiles at the beginning(end) of the deployment
 2. Calculate the time and distance between the glider and discrete water sample
 3. Plot the glider profiles and discrete water samples
-4. Calculate the differences between the water samples and glider data. For surface water samples
+4. Bin the water sampling data into 2m depth bins
+5. Remove water samples from the thermocline (too much variability to do an accurate comparison)
+6. Apply the pH_flag to the discrete water sampling data (remove when difference between pH measured and calculated is greater than 0.04)
+7. For water samples, accuracy is 0.003 pH units with a precision of 0.001 pH units. If the duplicate
+water samples differ by more than 0.01 pH units (raw values, not corrected for temperature, pressure, and salinity):
+if the difference between the pH_diff_QC values is > 0.001, use the sample with the smaller pH_diff_QC
+if the difference between the pH_diff_QC values is < 0.001, use the sample from the first cast (Tyler Menz pers comm)
+8. Correct water sample pH for temperature, pressure, and salinity using pyCO2SYS
+9. Calculate the differences between the water samples and glider data. For surface water samples
 (e.g. depth < 4 m), compare to the median of the glider data from 0-4m. For water samples >4 m depth,
 compare to the median of the glider data from the water sample depth +/- 1 m.
-5. Save the plots and summary data to a csv file
+10. Save the plots and summary data to a csv file
 """
 
 import numpy as np
@@ -18,10 +26,8 @@ import pandas as pd
 import xarray as xr
 import os
 import math
-import gsw
 import pytz
 from erddapy import ERDDAP
-import PyCO2SYS as pyco2
 import matplotlib.pyplot as plt
 plt.rcParams.update({'font.size': 12})
 pd.set_option('display.width', 320, "display.max_columns", 15)  # for display in pycharm console
@@ -74,7 +80,7 @@ def main(fname, proj):
     # subset the dataframe for the glider deployment (some rows are associated with multiple glider deployments)
     df2 = df.loc[df['glider_trajectory'].str.contains(deploy, na=False)]
 
-    plt_vars = ['chlorophyll_a', 'pH', 'salinity', 'temperature', 'total_alkalinity']
+    plt_vars = ['chlorophyll_a', 'salinity', 'temperature', 'total_alkalinity', 'pH']
     for dr in np.unique(df2['deployment_recovery']):
         df_dr = df2.loc[df2['deployment_recovery'] == dr]
         sample_time = np.nanmin(df_dr['time'])
@@ -86,7 +92,7 @@ def main(fname, proj):
         tsave = pd.to_datetime(sample_time).strftime('%Y%m%dT%H%M')
         slat = np.round(sample_lat[0], 4)
         slon = np.round(sample_lon[0], 4)
-        sample_meta = f'Sample: {sample_time}, location {[str(slat), str(slon)]}'
+        sample_meta = f'Sample: {sample_time}'
 
         # subset glider data (10 profiles) at the beginning or end of the deployment
         n = 10
@@ -105,6 +111,14 @@ def main(fname, proj):
             elif dr == 'recovery':
                 ptimes = profiletimes[-n - 10:-n]
             dss = ds.sel(profile_time=slice(np.nanmin(ptimes), np.nanmax(ptimes)))
+            if np.sum(~np.isnan(dss.pH)) < 50:
+                if dr == 'deployment':
+                    ptimes = profiletimes[n + 10:n + 20]
+                dss = ds.sel(profile_time=slice(np.nanmin(ptimes), np.nanmax(ptimes)))
+                if np.sum(~np.isnan(dss.pH)) < 50:
+                    if dr == 'deployment':
+                        ptimes = profiletimes[n + 20:n + 30]
+                    dss = ds.sel(profile_time=slice(np.nanmin(ptimes), np.nanmax(ptimes)))
 
         dss_t0 = pd.to_datetime(np.nanmin(dss.time.values))
         dss_t1 = pd.to_datetime(np.nanmax(dss.time.values))
@@ -116,7 +130,7 @@ def main(fname, proj):
         dss_t1savestr = pd.to_datetime(dss_t1).strftime('%Y%m%dT%H%M')
         glat = np.round(np.nanmean(dss.profile_lat.values), 4)
         glon = np.round(np.nanmean(dss.profile_lon.values), 4)
-        glider_meta = f'Glider profiles: {dss_t0str} to {dss_t1str},\nlocation {[str(glat), str(glon)]}'
+        glider_meta = f'Glider profiles: {dss_t0str} to {dss_t1str}'
 
         # differences between glider and samples - distance and time
         distance_meters = int(haversine(glat, glon, slat, slon))
@@ -144,8 +158,15 @@ def main(fname, proj):
 
             if pv != 'chlorophyll_a':
                 # plot water sample data
-                ax.scatter(sample.astype(float), sample_depth.astype(float), c='tab:red', ec='k', s=50,
+                ax.scatter(sample.astype(float), sample_depth.astype(float), c='tab:orange', ec='k', s=100,
                             label='water samples')
+                
+            if pv == 'pH':
+                # plot values that fail QC
+                fqc = df_dr.loc[df_dr['pH_flag'] >= 3]
+                if len(fqc) > 0:
+                    ax.scatter(fqc['pH_corrected'].astype(float), fqc['depth'].astype(float), c='tab:orange', ec='k', s=200,
+                                label='failed QC (removed)', marker='X')
 
             ax.legend()
             #plt.ylim(0, 16)
@@ -153,23 +174,70 @@ def main(fname, proj):
             ax.set_xlabel(pv)
             ax.invert_yaxis()
             ax.set_ylabel('Depth (m)')
-            ax.set_title(f'Glider {dr.capitalize()}\n{sample_meta}\n{glider_meta}\n{diff_meta}, Collection: {collection_method}')
+            title = f'{dr.capitalize()} {sample_meta}\n{glider_meta}\n{diff_meta}, Collection: {collection_method}'
+            ax.set_title(title, fontsize=13)
 
             sfilename = f'{deploy}_discrete_comparison_{dr}_{dss_t0savestr}-{dss_t1savestr}_{pv}.png'
             sfile = os.path.join(save_dir, sfilename)
-            plt.savefig(sfile, dpi=300)
-            plt.close()
+            
+            # plot pH last and leave it open in case edits need to be made for QC
+            if pv != 'pH':
+                plt.savefig(sfile, dpi=300)
+                plt.close()
 
         # write summary file
         df_dr.loc[df_dr['depth'] <= 2, 'depth'] = 2  # set depth to 2 m for shallow samples
+
+        # remove values that fail QC
+        df_dr = df_dr.loc[df_dr['pH_flag'] < 3]
+
+        # calculate the difference between pH calculated from DIC/TA and pH measured, this is used for QC
+        df_dr['pH_diff_QC'] = abs(df_dr['pH_calculated'] - df_dr['pH'])
 
         # round discrete depth up to the nearest multiple of 2
         df_dr['depth_ceil'] = np.ceil(df_dr['depth'] / 2) * 2
 
         for depth_bin, group in df_dr.groupby('depth_ceil'):
-            discrete_n = len(group)
-            if discrete_n == 0:
+            if len(group) == 0:
                 continue
+            # remove samples from the thermocline
+            elif 'thermocline' in np.unique(group['water_column_location']):
+                # plot a different marker for the thermocline samples
+                ax.scatter(group['pH_corrected'], group['depth'], c='tab:orange', ec='k', s=350,
+                                    label='thermocline', marker='*')
+                continue
+            elif len(group) == 2:
+                # calculate the difference between the pH measurements
+                sample_diff = abs(group['pH'].iloc[0] - group['pH'].iloc[1])
+                if np.round(sample_diff, 2) > 0.01:
+                    # if the difference between the two samples is greater than 0.01:
+                    # if the difference between the pH_diff_QC values is > 0.001, use the sample with the smaller pH_diff_QC
+                    # if the difference between the pH_diff_QC values is < 0.001, use the sample from the first cast (Tyler Menz pers comm)
+                    qc_diff = abs(group['pH_diff_QC'].iloc[0] - group['pH_diff_QC'].iloc[1])
+                    if np.round(qc_diff, 3) > 0.001:
+                        # first, modify the plot
+                        remove = group.loc[group['pH_diff_QC'] == np.nanmax(group['pH_diff_QC'])]
+                        ax.scatter(remove['pH_corrected'], remove['depth'], c='tab:orange', ec='k', s=250,
+                                    label='removed', marker='s')
+
+                        title = f'{title}\n{int(depth_bin)}m: removed sample from cast {remove["cast"].iloc[0]}, raw sample diff={np.round(sample_diff, 3)}'
+                        ax.set_title(title, fontsize=13)
+
+                        group = group.loc[group['pH_diff_QC'] == np.nanmin(group['pH_diff_QC'])]
+                        print(f'Using sample with smaller pH_diff_QC for {depth_bin} m depth bin, from cast# {group["cast"].iloc[0]}')
+                    else:
+                        remove = group.loc[group['cast'] == 2]
+                        ax.scatter(remove['pH_corrected'], remove['depth'], c='tab:orange', ec='k', s=250,
+                                    label='removed', marker='s')
+
+                        ax.legend()
+                        title = f'{title}\n{int(depth_bin)}m: removed sample from cast {remove["cast"].iloc[0]} sample diff={np.round(sample_diff, 3)}'
+                        ax.set_title(title, fontsize=13)
+
+                        group = group.loc[group['cast'] == 1]  # keep the sample from the first cast
+                        print(f'Using sample from cast# {group["cast"].iloc[0]} for {depth_bin} m depth bin')
+
+            discrete_n = len(group)
             coll_method = np.unique(group.collection_method).tolist()
             discrete_depth = np.nanmedian(group.depth)
             if discrete_depth < 4:
@@ -186,6 +254,8 @@ def main(fname, proj):
                 gl_depth = np.nan
 
             glider_n = int(np.sum(~np.isnan(dss.pH[gl_depth_idx])))
+            if glider_n < 10:
+                continue  # skip this depth bin if there are not enough glider data points
             discrete_ph = np.round(np.nanmedian(group.pH_corrected), 3)
             dph_std = np.round(np.nanstd(group.pH_corrected), 3)
             #glider_ph = np.round(np.nanmedian(dss.ph_total_shifted[gl_depth_idx]), 3)
@@ -217,6 +287,13 @@ def main(fname, proj):
                             glider_sal, gsal_std, discrete_sal, dsal_std]
 
             summary_rows.append(summary_data)
+        
+        # add the legend and close the pH plot
+        handles, labels = plt.gca().get_legend_handles_labels()  # only show one set of legend labels
+        by_label = dict(zip(labels, handles))
+        ax.legend(by_label.values(), by_label.keys())
+        plt.savefig(sfile, dpi=300)
+        plt.close()
 
     summary_df = pd.DataFrame(summary_rows, columns=summary_headers)
     summary_df.sort_values(by=['discrete_date', 'discrete_depth_m'], inplace=True)
