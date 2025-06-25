@@ -22,6 +22,10 @@ collection_method:
     attrs:
         description: Method by which the water samples were collected (e.g., Niskin, CTD Rosette, bucket)
         long_name: Collection Method
+water_column_location:
+    attrs:
+        description: Location in the water column where the sample was collected (e.g., surface, thermocline, bottom)
+        long_name: Water Column Location
 depth:
     attrs:
         long_name: Depth
