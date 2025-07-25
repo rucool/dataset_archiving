@@ -13,6 +13,8 @@ import numpy as np
 import pandas as pd
 import yaml
 import cmocean as cmo
+import cool_maps.plot as cplt
+import cartopy.crs as ccrs
 import matplotlib.pyplot as plt
 import dataset_archiving.common as cf
 import dataset_archiving.plotting as pf
@@ -33,6 +35,30 @@ def main(fname):
 
     t0str = pd.to_datetime(np.nanmin(ds.time)).strftime('%Y-%m-%dT%H:%M')
     t1str = pd.to_datetime(np.nanmax(ds.time)).strftime('%Y-%m-%dT%H:%M')
+
+    # make a map of the glider track
+    # define the map extent
+    df = pd.DataFrame({'lon': ds.profile_lon.values, 'lat': ds.profile_lat.values})
+    df = df.drop_duplicates()
+    extent = [np.nanmin(df.lon) - 1.5, np.nanmax(df.lon) + 1.5,
+              np.nanmin(df.lat) - 1, np.nanmax(df.lat) + 1]
+    
+    kwargs = dict()
+    kwargs['coast'] = 'high'
+    kwargs['oceancolor'] = 'none'
+    kwargs['decimal_degrees'] = True
+    kwargs['bathymetry'] = True
+    #kwargs['bathymetry_file'] = '/Users/garzio/Documents/rucool/bathymetry/GEBCO_2014_2D_-100.0_0.0_-10.0_50.0.nc'
+    kwargs['bathymetry_method'] = 'topo_log'
+    fig, ax = cplt.create(extent, **kwargs)
+
+    ax.scatter(df.lon, df.lat, color='magenta', marker='.', s=20, transform=ccrs.PlateCarree(), zorder=10)
+    
+    plt.title(f'{deploy}')
+    sfilename = f'{deploy}_glider_track.png'
+    sfile = os.path.join(savedir, sfilename)
+    plt.savefig(sfile, dpi=200)
+    plt.close()
 
     root_dir = os.path.dirname(os.path.abspath(__file__))
     parent_dir = os.path.dirname(root_dir)
