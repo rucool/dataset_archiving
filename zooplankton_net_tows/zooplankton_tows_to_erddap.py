@@ -2,7 +2,7 @@
 
 """
 Author: Lori Garzio on 4/30/2025
-Last modified: 5/1/2025
+Last modified: 8/6/2025
 Format zooplankton net tow data to netcdf for sharing in ERDDAP
 https://rucool-sampling.marine.rutgers.edu/erddap/index.html
 These datasets are sorted by project.
@@ -52,7 +52,7 @@ def main(proj):
     # drop columns
     drop_cols = ['date_utc', 'time_utc_start', 'time_utc_end', 'lat_degrees_start', 'lat_mins_start', 
                  'lon_degrees_start', 'lon_mins_start', 'lat_degrees_end', 'lat_mins_end',
-                 'lon_degrees_end', 'lon_mins_end']
+                 'lon_degrees_end', 'lon_mins_end', 'tow_technician', 'counts_performed_by']
     df.drop(drop_cols, axis=1, inplace=True)
     df = df.set_index('time')
     df = df.sort_index()
