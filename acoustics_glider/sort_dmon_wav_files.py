@@ -101,7 +101,7 @@ def main(filedirectory, deployment):
     for i, row in df.iterrows():
         # for files that need to be split, don't put them in the files_to_archive directory
         # those will be added later using sort_split_dmon_wav_files.py
-        if row['split_file'] in ['split_start', 'split_end']:
+        if row['split_file'] in ['split_start', 'split_end', 'dont include']:
             continue
         else:
             # find all of the files associated with the current .xml file, rename them, and save them to a new directory

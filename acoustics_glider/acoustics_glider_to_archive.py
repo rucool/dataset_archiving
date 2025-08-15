@@ -2,7 +2,7 @@
 
 """
 Author: Lori Garzio on 2/19/2025
-Last modified: 5/13/2025
+Last modified: 8/14/2025
 Process final acoustics glider datasets to archive:
 AZFP to NCEI (https://www.ncei.noaa.gov/products/water-column-sonar-data)
 DMON to NCEI (https://www.ncei.noaa.gov/products/passive-acoustic-data)
@@ -34,7 +34,10 @@ def main(fname, acoustics, rfp):
     os.makedirs(savedir, exist_ok=True)
 
     ds = xr.open_dataset(fname)
-    deploy = ds.attrs['deployment']
+    try:
+        deploy = ds.attrs['deployment']
+    except KeyError:
+        deploy = fname.split('/')[-1].split('-profile')[0]  # if no deployment in attrs, use the filename
 
     # grab profile_id encoding
     pid_encoding = ds.profile_id.encoding
@@ -48,6 +51,7 @@ def main(fname, acoustics, rfp):
     # apply QARTOD QC to all variables except pressure
     kwargs = dict()
     kwargs['add_comment'] = comment
+    #kwargs['qc_variety'] = 'failed_only'
     cf.apply_qartod_qc(ds, **kwargs)
 
     # apply CTD hysteresis test QC
