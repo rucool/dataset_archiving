@@ -3,7 +3,7 @@
 """
 Author: Lori Garzio on 2/26/2025
 Modified from code written by Jessica Leonard
-Last modified: 8/13/2025
+Last modified: 8/19/2025
 After using the d3read software to process raw DMON .dtg files to .wav files, this script
 1. renames the files to contain the deployment ID and moves those to a folder called "renamed"
 2. reads in the .xml metadata files to determine which .wav files contain deployment data
@@ -44,7 +44,8 @@ def main(filedirectory, deployment):
     extensions = ['.wav', '.xml', '.dtg', '.log', '.err']
     files = sorted([x for x in os.listdir(filedirectory) if os.path.isfile(os.path.join(filedirectory, x)) and os.path.splitext(x)[-1] in extensions])
     for f in files:
-        orig_file_suffix = os.path.splitext(f)[0].split('_')[-1]
+        #orig_file_suffix = os.path.splitext(f)[0].split('_')[-1]
+        orig_file_suffix = os.path.splitext(f)[0][-3:]
         file_ext = os.path.splitext(f)[-1]
         f_newname = f'{deployment}_{orig_file_suffix}{file_ext}'
         shutil.copy(os.path.join(filedirectory, f), os.path.join(savedir_rename, f_newname))
