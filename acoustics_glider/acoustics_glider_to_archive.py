@@ -51,7 +51,7 @@ def main(fname, acoustics, rfp):
     # apply QARTOD QC to all variables except pressure
     kwargs = dict()
     kwargs['add_comment'] = comment
-    #kwargs['qc_variety'] = 'failed_only'
+    #kwargs['qc_variety'] = 'failed_only'  # suspect_failed (default) or failed_only
     cf.apply_qartod_qc(ds, **kwargs)
 
     # apply CTD hysteresis test QC
