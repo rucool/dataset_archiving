@@ -2,7 +2,7 @@
 
 """
 Author: Lori Garzio on 2/11/2025
-Last modified: 2/18/2025
+Last modified: 8/19/2025
 Download a user-specified glider dataset in netCDF format from RUCOOL's glider ERDDAP server and save to a local
 directory
 """
@@ -41,6 +41,11 @@ def main(deploy, version, aev, sdir):
     for sv in sensor_vars:
         if sv in ds_vars:
             glider_vars.append([sv])
+        # add unshifted oxygen if shifted isn't available
+        if sv in ['oxygen_concentration_shifted', 'oxygen_saturation_shifted']:
+            if sv not in ds_vars:
+                if sv.replace('_shifted', '') in ds_vars:
+                    glider_vars.append([sv.replace('_shifted', '')])
     
     # add all of the instrument metadata vars
     instrument_vars = [x for x in ds_vars if 'instrument_' in x]
