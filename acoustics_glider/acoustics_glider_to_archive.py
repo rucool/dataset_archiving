@@ -86,6 +86,20 @@ def main(fname, acoustics, rfp):
     except KeyError:
         pass
 
+    # remove clearly bad data (usually from older datasets that don't have QC)
+    idx = np.where(ds.conductivity <= 0)[0]
+    ctdvars = ['conductivity', 'temperature', 'salinity', 'density']
+    for cv in ctdvars:
+        ds[cv].values[idx] = np.nan
+    
+    try:
+        idx = np.where(ds.oxygen_concentration <= 0)[0]
+        oxyvars = ['oxygen_concentration', 'oxygen_saturation']
+        for ov in oxyvars:
+            ds[ov].values[idx] = np.nan
+    except AttributeError:
+        pass
+    
     # fix pressure units
     if ds.pressure.units == 'bar':
         if 'multiplied by 10 to convert from bar to dbar' in ds.pressure.comment:
