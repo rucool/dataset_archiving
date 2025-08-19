@@ -13,13 +13,19 @@ beta_700nm:
   cmap: cmo.thermal
 cdom:
   cmap: cmo.thermal
+oxygen_concentration:
+  cmap: cmo.oxy
 oxygen_concentration_shifted:
   cmap: cmo.oxy
 oxygen_concentration_shifted_mgL:
   cmap: cmo.oxy
+oxygen_saturation:
+  cmap: cmo.oxy
 oxygen_saturation_shifted:
   cmap: cmo.oxy
 pH:
+  cmap: cmo.matter
+pH_corrected:
   cmap: cmo.matter
 aragonite_saturation_state:
   cmap: cmo.matter
