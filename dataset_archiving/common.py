@@ -5,7 +5,9 @@ Common functions
 """
 
 import numpy as np
+import xarray as xr
 from erddapy import ERDDAP
+from netCDF4 import default_fillvals
 
 
 def apply_ctd_hysteresis_qc(dataset, qc_variety='suspect_failed', add_comment=False):
@@ -97,6 +99,44 @@ def get_dataset_variables(server, dataset_id):
     return list(var_dict.keys())
 
 
+def interpolate_depth(dataset):
+    '''
+    Interpolate depth variable in an xarray dataset.
+    This function applies QARTOD QC to the depth variable, converts any failed (4) QC flags to NaN,
+    and then performs linear interpolation on the depth values using pandas.DataFrame.interpolate.
+    The interpolated depth is added to the dataset as a new DataArray named 'depth_interpolated'.
+    dataset: xarray dataset containing a 'depth' variable
+    '''
+    
+    # apply pressure QARTOD QC to depth. convert fail (4) QC flags to nan
+    depthcopy = dataset.depth.copy()
+    for qv in [x for x in dataset.data_vars if 'pressure_qartod' in x]:
+        qv_vals = dataset[qv].values
+        qv_idx = np.where(qv_vals == 4)[0]
+        depthcopy[qv_idx] = np.nan
+    
+    # interpolate depth
+    df = depthcopy.to_dataframe()
+    # Drop the duplicate 'depth' column if it exists
+    df = df.loc[:, ~df.columns.duplicated()]
+    depth_interp = df['depth'].interpolate(method='linear', limit_direction='both', limit=2).values
+
+    attrs = dataset.depth.attrs.copy()
+    attrs['ancillary_variables'] = f'{attrs["ancillary_variables"]} depth'
+    attrs['comment'] = f'Linear interpolated depth using pandas.DataFrame.interpolate'
+    attrs['long_name'] = 'Interpolated Depth'
+    attrs['source_sensor'] = 'depth'
+    attrs['standard_name'] = 'depth'
+
+    da = xr.DataArray(depth_interp.astype(dataset.depth.dtype), coords=dataset.depth.coords, 
+                      dims=dataset.depth.dims, name='depth_interpolated', attrs=attrs)
+
+    # use the encoding from the original depth variable
+    set_encoding(da, original_encoding=dataset.depth.encoding)
+
+    dataset['depth_interpolated'] = da
+
+
 def return_erddap_nc(server, ds_id, variables=None, constraints=None):
     e = ERDDAP(server=server,
                protocol='tabledap',
@@ -111,3 +151,26 @@ def return_erddap_nc(server, ds_id, variables=None, constraints=None):
     ds = e.to_xarray(requests_kwargs={"timeout": 600})  # increase timeout to 10 minutes
     ds = ds.sortby(ds.time)
     return ds
+
+
+def set_encoding(data_array, original_encoding=None):
+    """
+    Define encoding for a data array, using the original encoding from another variable (if applicable)
+    :param data_array: data array to which encoding is added
+    :param original_encoding: optional encoding dictionary from the parent variable
+    (e.g. use the encoding from "depth" for the new depth_interpolated variable)
+    """
+    if original_encoding:
+        data_array.encoding = original_encoding
+
+    try:
+        encoding_dtype = data_array.encoding['dtype']
+    except KeyError:
+        data_array.encoding['dtype'] = data_array.dtype
+
+    try:
+        encoding_fillvalue = data_array.encoding['_FillValue']
+    except KeyError:
+        # set the fill value using netCDF4.default_fillvals
+        data_type = f'{data_array.dtype.kind}{data_array.dtype.itemsize}'
+        data_array.encoding['_FillValue'] = default_fillvals[data_type]

@@ -2,7 +2,7 @@
 
 """
 Author: Lori Garzio on 2/19/2025
-Last modified: 8/14/2025
+Last modified: 8/19/2025
 Process final acoustics glider datasets to archive:
 AZFP to NCEI (https://www.ncei.noaa.gov/products/water-column-sonar-data)
 DMON to NCEI (https://www.ncei.noaa.gov/products/passive-acoustic-data)
@@ -86,6 +86,22 @@ def main(fname, acoustics, rfp):
     except KeyError:
         pass
 
+    # fix pressure units
+    if ds.pressure.units == 'bar':
+        if 'multiplied by 10 to convert from bar to dbar' in ds.pressure.comment:
+            ds.pressure.attrs['units'] = 'dbar'
+
+    # fix depth_interpolated standard_name and units
+    # or calculate depth_interpolated if it's not available in the file
+    try:
+        ds.depth_interpolated.attrs['standard_name'] = 'depth'
+        ds.depth_interpolated.attrs['units'] = 'm'
+    except AttributeError:
+        # interpolate depth
+        cf.interpolate_depth(ds)
+        ds.depth_interpolated.attrs['standard_name'] = 'depth'
+        ds.depth_interpolated.attrs['units'] = 'm'
+
     # drop extra variables
     drop_vars = []
     search_str = ['_hysteresis_test', '_qartod_', '_optimal_shift', 'ctd41cp_timestamp', 'water_depth']
@@ -109,15 +125,6 @@ def main(fname, acoustics, rfp):
     da = xr.DataArray(pid, coords=ds.profile_time.coords, dims=ds.profile_time.dims, name=name, attrs=attributes)
     ds[name] = da
     ds[name].encoding = pid_encoding
-
-    # fix pressure units
-    if ds.pressure.units == 'bar':
-        if 'multiplied by 10 to convert from bar to dbar' in ds.pressure.comment:
-            ds.pressure.attrs['units'] = 'dbar'
-
-    # fix depth_interpolated standard_name and units
-    ds.depth_interpolated.attrs['standard_name'] = 'depth'
-    ds.depth_interpolated.attrs['units'] = 'm'
 
     # make sure valid_min and valid_max are the same data type as the variables
     for v in ds.data_vars:
@@ -206,8 +213,12 @@ def main(fname, acoustics, rfp):
                    )
 
     for iv in instrument_vars:
-        vardict['maker'].append(ds[iv].attrs["maker"])
-        vardict['model'].append(ds[iv].attrs["model"])
+        try:
+            vardict['maker'].append(ds[iv].attrs["maker"])
+            vardict['model'].append(ds[iv].attrs["model"])
+        except KeyError:
+            vardict['maker'].append(ds[iv].attrs["make_model"])
+            vardict['model'].append(ds[iv].attrs["make_model"])
         vardict['sn'].append(ds[iv].attrs["serial_number"])
         vardict['cal_date'].append(ds[iv].attrs["calibration_date"])
         try:
