@@ -17,7 +17,7 @@ cast:
 niskin:
     attrs:
         description: Niskin bottle number
-    decimal: 0
+    decimal: 1
 collection_method:
     attrs:
         description: Method by which the water samples were collected (e.g., Niskin, CTD Rosette, bucket)
