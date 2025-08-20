@@ -103,7 +103,8 @@ def main():
     # depth is negative for oceanographic convention
     merged['pressure_dbar'] = abs(gsw.p_from_z(-merged['depth'], merged['latitude']))
 
-    # calculate pH corrected for temperature pressure salinity
+    # calculate pH corrected for temperature and pressure
+    # don't need to correct for in-situ salinity since it's used in the pH measurement calculation
     # pyCO2SYS needs two parameters to calculate pH corrected, so if AverageTA isn't available, fill with 2200
     merged['TA'] = merged['TA'].fillna(2200)
     par1 = merged['pH']
@@ -111,8 +112,7 @@ def main():
     par2 = merged['TA']
     par2_type = 1
 
-    kwargs = dict(salinity=merged['salinity'],
-                  temperature=25,
+    kwargs = dict(temperature=25,
                   temperature_out=merged['temperature'],
                   pressure=0,
                   pressure_out=merged['pressure_dbar'],

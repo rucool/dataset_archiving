@@ -108,7 +108,7 @@ pH_corrected:
         units: '1'
         long_name: pH
         standard_name: sea_water_ph_reported_on_total_scale
-        description: Average pH (on the Total pH scale) measured from the water samples that have been corrected for in-situ temperature, pressure and salinity using the PyCO2SYS python package.
+        description: Average pH (on the Total pH scale) measured from the water samples that have been corrected for in-situ temperature and pressure using the PyCO2SYS python package.
     decimal: 4
 pH_calculated:
     attrs:
