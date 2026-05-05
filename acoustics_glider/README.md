@@ -6,7 +6,7 @@ A collection of tools to post-process and prepare datasets related to glider dep
 
 AZFP (Acoustic Zooplankton Fish Profiler) glider datasets are QC'd and archived in NCEI's [Water Column Sonar Data](https://www.ncei.noaa.gov/products/water-column-sonar-data) along with the raw AZFP data files and post-processed AZFP data.
 
-DMON (WHOI Digital Acoustic Monitoring Instrument) glider datasets are QC'd and archived in NCEI's [Passive Acoustic Data Archive](https://www.ncei.noaa.gov/products/passive-acoustic-data) along with the .wav audio files from the DMON
+DMON (WHOI Digital Acoustic Monitoring Instrument) glider datasets are QC'd and archived in NCEI's [Passive Acoustic Data Archive](https://www.ncei.noaa.gov/products/passive-acoustic-data) along with the .wav audio files from the DMON. Real-time detections are found on the WHOI [robots4whales](https://robots4whales.whoi.edu/) website. To access archived detections from a specific deployment, the url is http://dcs.whoi.edu/rutgersXXYY/rutgersXXYY_ruZZ.shtml where XX and YY are either the 2 digit month and year or year and month and ZZ is the glider ID number (e.g. https://dcs.whoi.edu/rutgers2510/rutgers2510_ru43.shtml). To download the detections is the url is http://dcs.whoi.edu/rutgersXXYY/rutgersXXYY_ruZZ_html/ptracks/manual_analysis.csv.
 
 ## Post-processing Instructions
 
